@@ -7,11 +7,11 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey:import.meta.env.VITE_FIREBASE_APIKEY,
-  authDomain: "GrabIT-food-delivery.firebaseapp.com",
-  projectId: "GrabIT-food-delivery",
-  storageBucket: "GrabIT-food-delivery.firebasestorage.app",
-  messagingSenderId: "693314883513",
-  appId: "1:693314883513:web:4840c943ecf3fb61a33068"
+  authDomain: "grabit-18103.firebaseapp.com",
+  projectId: "grabit-18103",
+  storageBucket: "grabit-18103.firebasestorage.app",
+  messagingSenderId: "129415456836",
+  appId: "1:129415456836:web:6829a33a04f9eea36cf411"
 };
 
 // Initialize Firebase
