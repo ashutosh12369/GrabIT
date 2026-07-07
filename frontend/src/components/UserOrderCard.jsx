@@ -154,8 +154,8 @@ function UserOrderCard({ data }) {
                 <p className='font-semibold'>Total: ₹{data.totalAmount}</p>
                 <div className='flex gap-2 flex-wrap justify-end'>
                     <button className='border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm' onClick={handleDownloadReceipt}>Receipt (PDF)</button>
-                    <button className='border border-[#ff4d2d] text-[#ff4d2d] hover:bg-orange-50 px-4 py-2 rounded-lg text-sm' onClick={() => handleReorder()}>Reorder</button>
-                    <button className='bg-[#ff4d2d] hover:bg-[#e64526] text-white px-4 py-2 rounded-lg text-sm' onClick={() => navigate(`/track-order/${data._id}`)}>Track Order</button>
+                    <button className='border border-[#16a34a] text-[#16a34a] hover:bg-green-50 px-4 py-2 rounded-lg text-sm' onClick={() => handleReorder()}>Reorder</button>
+                    <button className='bg-[#16a34a] hover:bg-[#15803d] text-white px-4 py-2 rounded-lg text-sm' onClick={() => navigate(`/track-order/${data._id}`)}>Track Order</button>
                 </div>
             </div>
 

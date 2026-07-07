@@ -39,7 +39,7 @@ return ()=>{
 
         <div className='flex items-center gap-[20px] mb-6 '>
           <div className=' z-[10] ' onClick={() => navigate("/")}>
-            <IoIosArrowRoundBack size={35} className='text-[#ff4d2d]' />
+            <IoIosArrowRoundBack size={35} className='text-[#16a34a]' />
           </div>
           <h1 className='text-2xl font-bold  text-start'>My Orders</h1>
         </div>
@@ -59,7 +59,7 @@ return ()=>{
               <p className='text-gray-500 mb-6'>Looks like you haven't placed any orders yet.</p>
               {userData.role === "user" && (
                 <button 
-                  className='bg-[#ff4d2d] text-white px-6 py-2 rounded-xl font-semibold hover:bg-orange-600 transition'
+                  className='bg-[#16a34a] text-white px-6 py-2 rounded-xl font-semibold hover:bg-green-600 transition'
                   onClick={() => navigate('/')}
                 >
                   Start Ordering

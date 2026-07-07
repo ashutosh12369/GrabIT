@@ -150,12 +150,12 @@ handleTodayDeliveries()
       <Nav/>
       <div className='w-full max-w-[800px] flex flex-col gap-5 items-center'>
     <div className='bg-white rounded-2xl shadow-md p-5 flex flex-col justify-start items-center w-[90%] border border-orange-100 text-center gap-2'>
-<h1 className='text-xl font-bold text-[#ff4d2d]'>Welcome, {userData.fullName}</h1>
-<p className='text-[#ff4d2d] '><span className='font-semibold'>Latitude:</span> {deliveryBoyLocation?.lat}, <span className='font-semibold'>Longitude:</span> {deliveryBoyLocation?.lon}</p>
+<h1 className='text-xl font-bold text-[#16a34a]'>Welcome, {userData.fullName}</h1>
+<p className='text-[#16a34a] '><span className='font-semibold'>Latitude:</span> {deliveryBoyLocation?.lat}, <span className='font-semibold'>Longitude:</span> {deliveryBoyLocation?.lon}</p>
     </div>
 
 <div className='bg-white rounded-2xl shadow-md p-5 w-[90%] mb-6 border border-orange-100'>
-  <h1 className='text-lg font-bold mb-3 text-[#ff4d2d] '>Today Deliveries</h1>
+  <h1 className='text-lg font-bold mb-3 text-[#16a34a] '>Today Deliveries</h1>
 
   <ResponsiveContainer width="100%" height={200}>
    <BarChart data={todayDeliveries}>
@@ -163,7 +163,7 @@ handleTodayDeliveries()
   <XAxis dataKey="hour" tickFormatter={(h)=>`${h}:00`}/>
     <YAxis  allowDecimals={false}/>
     <Tooltip formatter={(value)=>[value,"orders"]} labelFormatter={label=>`${label}:00`}/>
-      <Bar dataKey="count" fill='#ff4d2d'/>
+      <Bar dataKey="count" fill='#16a34a'/>
    </BarChart>
   </ResponsiveContainer>
 
@@ -188,7 +188,7 @@ availableAssignments.map((a,index)=>(
     <p className='text-sm text-gray-500'><span className='font-semibold'>Delivery Address:</span> {a?.deliveryAddress.text}</p>
 <p className='text-xs text-gray-400'>{a.items.length} items | {a.subtotal}</p>
    </div>
-   <button className='bg-orange-500 text-white px-4 py-1 rounded-lg text-sm hover:bg-orange-600' onClick={()=>acceptOrder(a.assignmentId)}>Accept</button>
+   <button className='bg-green-500 text-white px-4 py-1 rounded-lg text-sm hover:bg-green-600' onClick={()=>acceptOrder(a.assignmentId)}>Accept</button>
 
   </div>
 ))
@@ -216,11 +216,11 @@ availableAssignments.map((a,index)=>(
 {!showOtpBox ? <button className='mt-4 w-full bg-green-500 text-white font-semibold py-2 px-4 rounded-xl shadow-md hover:bg-green-600 active:scale-95 transition-all duration-200' onClick={sendOtp} disabled={loading}>
 {loading?<ClipLoader size={20} color='white'/> :"Mark As Delivered"}
  </button>:<div className='mt-4 p-4 border rounded-xl bg-gray-50'>
-<p className='text-sm font-semibold mb-2'>Enter Otp send to <span className='text-orange-500'>{currentOrder.user.fullName}</span></p>
+<p className='text-sm font-semibold mb-2'>Enter Otp send to <span className='text-green-500'>{currentOrder.user.fullName}</span></p>
 <input type="text" className='w-full border px-3 py-2 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-orange-400' placeholder='Enter OTP' onChange={(e)=>setOtp(e.target.value)} value={otp}/>
 {message && <p className='text-center text-green-400 text-2xl mb-4'>{message}</p>}
 
-<button className="w-full bg-orange-500 text-white py-2 rounded-lg font-semibold hover:bg-orange-600 transition-all" onClick={verifyOtp}>Submit OTP</button>
+<button className="w-full bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition-all" onClick={verifyOtp}>Submit OTP</button>
   </div>}
 
   </div>}

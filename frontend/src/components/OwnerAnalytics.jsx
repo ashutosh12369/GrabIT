@@ -27,7 +27,7 @@ function OwnerAnalytics() {
     return (
         <div className='w-full max-w-4xl bg-white shadow-lg rounded-2xl p-6 border border-gray-100 mt-6 slide-up'>
             <h2 className='text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2'>
-                <FaChartLine className='text-[#ff4d2d]' /> Business Analytics
+                <FaChartLine className='text-[#16a34a]' /> Business Analytics
             </h2>
 
             <div className='flex gap-4 mb-8'>
@@ -51,7 +51,7 @@ function OwnerAnalytics() {
                                 <XAxis dataKey="hour" stroke="#9ca3af" />
                                 <YAxis stroke="#9ca3af" allowDecimals={false} />
                                 <Tooltip cursor={{ fill: '#f3f4f6' }} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                                <Bar dataKey="orders" fill="#ff4d2d" radius={[6, 6, 0, 0]} barSize={40} />
+                                <Bar dataKey="orders" fill="#16a34a" radius={[6, 6, 0, 0]} barSize={40} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>

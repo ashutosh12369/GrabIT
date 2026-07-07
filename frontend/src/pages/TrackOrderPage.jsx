@@ -37,13 +37,13 @@ setLiveLocations(prev=>({
     return (
         <div className='max-w-4xl mx-auto p-4 flex flex-col gap-6'>
             <div className='relative flex items-center gap-4 top-[20px] left-[20px] z-[10] mb-[10px]' onClick={() => navigate("/")}>
-                <IoIosArrowRoundBack size={35} className='text-[#ff4d2d]' />
+                <IoIosArrowRoundBack size={35} className='text-[#16a34a]' />
                 <h1 className='text-2xl font-bold md:text-center'>Track Order</h1>
             </div>
       {currentOrder?.shopOrders?.map((shopOrder,index)=>(
         <div className='bg-white p-4 rounded-2xl shadow-md border border-orange-100 space-y-4' key={index}>
          <div>
-            <p className='text-lg font-bold mb-2 text-[#ff4d2d]'>{shopOrder.shop.name}</p>
+            <p className='text-lg font-bold mb-2 text-[#16a34a]'>{shopOrder.shop.name}</p>
             <p className='font-semibold'><span>Items:</span> {shopOrder.shopOrderItems?.map(i=>i.name).join(",")}</p>
             <p><span className='font-semibold'>Subtotal:</span> {shopOrder.subtotal}</p>
             <p className='mt-6'><span className='font-semibold'>Delivery address:</span> {currentOrder.deliveryAddress?.text}</p>
@@ -87,7 +87,7 @@ setLiveLocations(prev=>({
 <div className='text-sm text-gray-700 bg-blue-50 p-3 rounded-xl border border-blue-100 mt-2'>
 <p className='font-semibold'><span>Delivery Partner:</span> {shopOrder.assignedDeliveryBoy.fullName}</p>
 <p className='font-semibold'><span>Contact:</span> {shopOrder.assignedDeliveryBoy.mobile}</p>
-</div>:<p className='font-semibold text-orange-500 bg-orange-50 p-2 rounded-lg inline-block'>Looking for delivery partner...</p>}
+</div>:<p className='font-semibold text-green-500 bg-green-50 p-2 rounded-lg inline-block'>Looking for delivery partner...</p>}
          </>:<p className='text-green-600 font-bold text-lg bg-green-50 p-3 rounded-xl border border-green-100 text-center mt-2'>🎉 Order Delivered Successfully!</p>}
 
 {(shopOrder.assignedDeliveryBoy && shopOrder.status !== "delivered") && (

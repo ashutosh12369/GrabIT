@@ -46,7 +46,7 @@ function LocationModal({ onClose }) {
             <div className='bg-white rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl slide-up flex flex-col max-h-[80vh]'>
                 <div className='p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50'>
                     <h2 className='text-lg font-bold text-gray-800 flex items-center gap-2'>
-                        <FaLocationDot className='text-[#ff4d2d]' /> Change Location
+                        <FaLocationDot className='text-[#16a34a]' /> Change Location
                     </h2>
                     <button className='text-gray-400 hover:text-gray-600 cursor-pointer' onClick={onClose}>
                         <RxCross2 size={24} />
@@ -54,7 +54,7 @@ function LocationModal({ onClose }) {
                 </div>
                 
                 <div className='p-4'>
-                    <div className='flex items-center gap-2 border border-gray-300 rounded-xl px-3 py-2 focus-within:border-[#ff4d2d] focus-within:ring-1 focus-within:ring-[#ff4d2d]'>
+                    <div className='flex items-center gap-2 border border-gray-300 rounded-xl px-3 py-2 focus-within:border-[#16a34a] focus-within:ring-1 focus-within:ring-[#16a34a]'>
                         <IoIosSearch size={20} className='text-gray-400' />
                         <input 
                             type="text" 
@@ -65,7 +65,7 @@ function LocationModal({ onClose }) {
                             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                         />
                         <button 
-                            className='bg-[#ff4d2d] text-white px-3 py-1 rounded-lg text-sm font-semibold hover:bg-orange-600 transition'
+                            className='bg-[#16a34a] text-white px-3 py-1 rounded-lg text-sm font-semibold hover:bg-green-600 transition'
                             onClick={handleSearch}
                             disabled={loading}
                         >
@@ -80,11 +80,11 @@ function LocationModal({ onClose }) {
                             {results.map((result, idx) => (
                                 <div 
                                     key={idx} 
-                                    className='bg-white p-3 rounded-xl border border-gray-100 cursor-pointer hover:border-[#ff4d2d] hover:shadow-md transition group flex gap-3 items-center'
+                                    className='bg-white p-3 rounded-xl border border-gray-100 cursor-pointer hover:border-[#16a34a] hover:shadow-md transition group flex gap-3 items-center'
                                     onClick={() => handleSelectLocation(result)}
                                 >
-                                    <div className='w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center group-hover:bg-[#ff4d2d] transition'>
-                                        <FaLocationDot className='text-[#ff4d2d] group-hover:text-white transition' />
+                                    <div className='w-10 h-10 bg-green-50 rounded-full flex items-center justify-center group-hover:bg-[#16a34a] transition'>
+                                        <FaLocationDot className='text-[#16a34a] group-hover:text-white transition' />
                                     </div>
                                     <div>
                                         <p className='font-semibold text-gray-800'>{result.address_line1}</p>

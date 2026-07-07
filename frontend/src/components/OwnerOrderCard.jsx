@@ -58,10 +58,10 @@ const dispatch=useDispatch()
             </div>
 
 <div className='flex justify-between items-center mt-auto pt-3 border-t border-gray-100'>
-<span className='text-sm'>status: <span className='font-semibold capitalize text-[#ff4d2d]'>{data.shopOrders.status}</span>
+<span className='text-sm'>status: <span className='font-semibold capitalize text-[#16a34a]'>{data.shopOrders.status}</span>
 </span>
 
-<select  className='rounded-md border px-3 py-1 text-sm focus:outline-none focus:ring-2 border-[#ff4d2d] text-[#ff4d2d]' onChange={(e)=>handleUpdateStatus(data._id,data.shopOrders.shop._id,e.target.value)}>
+<select  className='rounded-md border px-3 py-1 text-sm focus:outline-none focus:ring-2 border-[#16a34a] text-[#16a34a]' onChange={(e)=>handleUpdateStatus(data._id,data.shopOrders.shop._id,e.target.value)}>
     <option value="">Change</option>
 <option value="pending">Pending</option>
 <option value="preparing">Preparing</option>
@@ -71,7 +71,7 @@ const dispatch=useDispatch()
 </div>
 
 {data.shopOrders.status=="out of delivery" && 
-<div className="mt-3 p-2 border rounded-lg text-sm bg-orange-50 gap-4">
+<div className="mt-3 p-2 border rounded-lg text-sm bg-green-50 gap-4">
     {data.shopOrders.assignedDeliveryBoy?<p>Assigned Delivery Boy:</p>:<p>Available Delivery Boys:</p>}
    {availableBoys?.length>0?(
      availableBoys.map((b,index)=>(

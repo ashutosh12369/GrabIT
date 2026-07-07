@@ -86,13 +86,13 @@ handleShop()
                     ))}
                 </div>
                 <textarea 
-                    className='w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-[#ff4d2d] focus:outline-none'
+                    className='w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-[#16a34a] focus:outline-none'
                     placeholder='What did you like or dislike?'
                     rows='3'
                     value={newReview.comment}
                     onChange={e => setNewReview(prev => ({...prev, comment: e.target.value}))}
                 ></textarea>
-                <button onClick={handleSubmitReview} className='bg-[#ff4d2d] text-white px-6 py-2 rounded-lg font-semibold hover:bg-[#e64526] transition'>Submit Review</button>
+                <button onClick={handleSubmitReview} className='bg-[#16a34a] text-white px-6 py-2 rounded-lg font-semibold hover:bg-[#15803d] transition'>Submit Review</button>
             </div>
         </div>
 

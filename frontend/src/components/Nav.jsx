@@ -78,7 +78,7 @@ function Nav() {
             className='flex items-center w-[30%] overflow-hidden gap-2 px-3 border-r border-green-200 cursor-pointer hover:bg-green-50'
             onClick={() => { setShowSearch(false); setShowLocationModal(true); }}
           >
-            <FaLocationDot size={20} className="text-[#ff4d2d]" />
+            <FaLocationDot size={20} className="text-[#16a34a]" />
             <div className='w-[80%] truncate font-semibold text-gray-700 text-sm'>{currentCity}</div>
           </div>
           <div className='flex-1 flex items-center gap-2 px-2'>
@@ -111,10 +111,10 @@ function Nav() {
             className='flex items-center gap-2 pr-3 border-r border-green-200 cursor-pointer hover:bg-green-50 p-1 rounded-lg transition'
             onClick={() => setShowLocationModal(true)}
           >
-            <FaLocationDot size={16} className="text-[#ff4d2d]" />
+            <FaLocationDot size={16} className="text-[#16a34a]" />
             <div className='max-w-[90px] truncate font-semibold text-gray-700 text-sm' title="Click to change location">{currentCity}</div>
           </div>
-          <IoIosSearch size={18} className='text-[#ff4d2d]' />
+          <IoIosSearch size={18} className='text-[#16a34a]' />
           <input
             type="text"
             placeholder='Search for food, restaurants...'

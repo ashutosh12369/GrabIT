@@ -184,19 +184,19 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
   return (
     <div className='min-h-screen bg-[#fff9f6] flex items-center justify-center p-6'>
       <div className=' absolute top-[20px] left-[20px] z-[10]' onClick={() => navigate("/")}>
-        <IoIosArrowRoundBack size={35} className='text-[#ff4d2d]' />
+        <IoIosArrowRoundBack size={35} className='text-[#16a34a]' />
       </div>
       <div className='w-full max-w-[900px] bg-white rounded-2xl shadow-xl p-6 space-y-6'>
         <h1 className='text-2xl font-bold text-gray-800'>Checkout</h1>
 
         <section>
           <div className='flex justify-between items-center mb-2'>
-              <h2 className='text-lg font-semibold flex items-center gap-2 text-gray-800'><IoLocationSharp className='text-[#ff4d2d]' /> Delivery Location</h2>
+              <h2 className='text-lg font-semibold flex items-center gap-2 text-gray-800'><IoLocationSharp className='text-[#16a34a]' /> Delivery Location</h2>
               {eta && <span className='bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full'>{eta}</span>}
           </div>
           <div className='flex gap-2 mb-3'>
-            <input type="text" className='flex-1 border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff4d2d]' placeholder='Enter Your Delivery Address..' value={addressInput} onChange={(e) => setAddressInput(e.target.value)} />
-            <button className='bg-[#ff4d2d] hover:bg-[#e64526] text-white px-3 py-2 rounded-lg flex items-center justify-center' onClick={getLatLngByAddress}><IoSearchOutline size={17} /></button>
+            <input type="text" className='flex-1 border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#16a34a]' placeholder='Enter Your Delivery Address..' value={addressInput} onChange={(e) => setAddressInput(e.target.value)} />
+            <button className='bg-[#16a34a] hover:bg-[#15803d] text-white px-3 py-2 rounded-lg flex items-center justify-center' onClick={getLatLngByAddress}><IoSearchOutline size={17} /></button>
             <button className='bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg flex items-center justify-center' onClick={getCurrentLocation}><TbCurrentLocation size={17} /></button>
           </div>
           <div className='rounded-xl border overflow-hidden'>
@@ -222,7 +222,7 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
         <section>
           <h2 className='text-lg font-semibold mb-3 text-gray-800'>Payment Method</h2>
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-            <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${paymentMethod === "cod" ? "border-[#ff4d2d] bg-orange-50 shadow" : "border-gray-200 hover:border-gray-300"
+            <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${paymentMethod === "cod" ? "border-[#16a34a] bg-green-50 shadow" : "border-gray-200 hover:border-gray-300"
               }`} onClick={() => setPaymentMethod("cod")}>
 
               <span className='inline-flex h-10 w-10 items-center justify-center rounded-full bg-green-100'>
@@ -234,7 +234,7 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
               </div>
 
             </div>
-            <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${paymentMethod === "online" ? "border-[#ff4d2d] bg-orange-50 shadow" : "border-gray-200 hover:border-gray-300"
+            <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${paymentMethod === "online" ? "border-[#16a34a] bg-green-50 shadow" : "border-gray-200 hover:border-gray-300"
               }`} onClick={() => setPaymentMethod("online")}>
 
               <span className='inline-flex h-10 w-10 items-center justify-center rounded-full bg-purple-100'>
@@ -282,7 +282,7 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
     <span>-₹{Math.min(userData.walletBalance, totalAmount + deliveryFee - discount)}</span>
   </div>
 )}
-<div className='flex justify-between text-lg font-bold text-[#ff4d2d] pt-2 border-t mt-2'>
+<div className='flex justify-between text-lg font-bold text-[#16a34a] pt-2 border-t mt-2'>
     <span>Total</span>
   <span>{AmountWithDeliveryFee}</span>
 </div>
@@ -290,7 +290,7 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
 {userData?.walletBalance > 0 && (
   <div className='pt-4'>
     <label className='flex items-center gap-2 cursor-pointer'>
-      <input type="checkbox" className='w-4 h-4 text-[#ff4d2d] focus:ring-[#ff4d2d]' checked={useWallet} onChange={() => setUseWallet(!useWallet)} />
+      <input type="checkbox" className='w-4 h-4 text-[#16a34a] focus:ring-[#16a34a]' checked={useWallet} onChange={() => setUseWallet(!useWallet)} />
       <span className='text-sm font-semibold text-gray-700'>Use Wallet Balance (₹{userData.walletBalance})</span>
     </label>
   </div>
@@ -302,7 +302,7 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
   </label>
   <input 
     type="datetime-local" 
-    className='w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff4d2d]' 
+    className='w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#16a34a]' 
     value={scheduledFor} 
     onChange={(e) => setScheduledFor(e.target.value)} 
     min={new Date().toISOString().slice(0, 16)}
@@ -310,13 +310,13 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
 </div>
 
 <div className='pt-2 flex gap-2 mt-4'>
-  <input type="text" className='flex-1 border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff4d2d] uppercase' placeholder='PROMO CODE' value={promoCode} onChange={(e) => setPromoCode(e.target.value)} />
+  <input type="text" className='flex-1 border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#16a34a] uppercase' placeholder='PROMO CODE' value={promoCode} onChange={(e) => setPromoCode(e.target.value)} />
   <button className='bg-gray-800 hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold' onClick={handleApplyPromo}>Apply</button>
 </div>
 
 <div className='pt-2'>
   <textarea 
-    className='w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff4d2d]' 
+    className='w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#16a34a]' 
     placeholder='Any special instructions? (e.g. "Extra spicy", "No onion")'
     rows='2'
     value={orderNotes}
@@ -326,7 +326,7 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
 
 </div>
         </section>
-        <button className='w-full bg-[#ff4d2d] hover:bg-[#e64526] text-white py-3 rounded-xl font-semibold' onClick={handlePlaceOrder}> {paymentMethod=="cod"?"Place Order":"Pay & Place Order"}</button>
+        <button className='w-full bg-[#16a34a] hover:bg-[#15803d] text-white py-3 rounded-xl font-semibold' onClick={handlePlaceOrder}> {paymentMethod=="cod"?"Place Order":"Pay & Place Order"}</button>
 
       </div>
     </div>
