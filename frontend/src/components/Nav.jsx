@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FaLocationDot } from "react-icons/fa6"
 import { IoIosSearch } from "react-icons/io"
-import { FiShoppingCart } from "react-icons/fi"
+import { FiShoppingCart, FiSun, FiMoon } from "react-icons/fi"
 import { useDispatch, useSelector } from 'react-redux'
 import { RxCross2 } from "react-icons/rx"
 import axios from 'axios'
@@ -22,6 +22,20 @@ function Nav() {
   const [query, setQuery] = useState("")
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark'
+  })
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+    }
+  }, [isDarkMode])
 
   const handleLogOut = async () => {
     try {
@@ -181,6 +195,14 @@ function Nav() {
             </button>
           </>
         )}
+
+        {/* Dark Mode Toggle */}
+        <button 
+          className='flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition text-gray-700 dark:text-gray-200'
+          onClick={() => setIsDarkMode(!isDarkMode)}
+        >
+          {isDarkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
+        </button>
 
         {/* Avatar + dropdown */}
         <div className='relative'>

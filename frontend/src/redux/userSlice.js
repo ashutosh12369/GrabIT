@@ -1,5 +1,8 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 
+const savedCart = JSON.parse(localStorage.getItem('cartItems')) || [];
+const savedTotal = parseFloat(localStorage.getItem('totalAmount')) || 0;
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -9,8 +12,8 @@ const userSlice = createSlice({
     currentAddress: null,
     shopInMyCity: null,
     itemsInMyCity: null,
-    cartItems: [],
-    totalAmount: 0,
+    cartItems: savedCart,
+    totalAmount: savedTotal,
     myOrders: [],
     searchItems: null,
     socket: null
@@ -47,12 +50,14 @@ const userSlice = createSlice({
       }
 
       state.totalAmount = state.cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
-
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
+      localStorage.setItem('totalAmount', state.totalAmount.toString())
     },
 
     setTotalAmount: (state, action) => {
       state.totalAmount = action.payload
-    }
+      localStorage.setItem('totalAmount', state.totalAmount.toString())
+    },
 
     ,
 
@@ -63,11 +68,15 @@ const userSlice = createSlice({
         item.quantity = quantity
       }
       state.totalAmount = state.cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
+      localStorage.setItem('totalAmount', state.totalAmount.toString())
     },
 
     removeCartItem: (state, action) => {
       state.cartItems = state.cartItems.filter(i => i.id !== action.payload)
       state.totalAmount = state.cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0)
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
+      localStorage.setItem('totalAmount', state.totalAmount.toString())
     },
 
     setMyOrders: (state, action) => {
@@ -75,6 +84,10 @@ const userSlice = createSlice({
     },
     addMyOrder: (state, action) => {
       state.myOrders = [action.payload, ...state.myOrders]
+      state.cartItems = []
+      state.totalAmount = 0
+      localStorage.removeItem('cartItems')
+      localStorage.removeItem('totalAmount')
     }
 
     ,

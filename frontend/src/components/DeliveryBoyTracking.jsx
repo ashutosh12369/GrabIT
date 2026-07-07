@@ -21,10 +21,32 @@ function DeliveryBoyTracking({ data }) {
     const customerLat = data.customerLocation.lat
     const customerlon = data.customerLocation.lon
 
-    const path = [
+    const [path, setPath] = React.useState([
         [deliveryBoyLat, deliveryBoylon],
         [customerLat, customerlon]
-    ]
+    ])
+
+    React.useEffect(() => {
+        const fetchRoute = async () => {
+            try {
+                // OSRM requires coords in lon,lat format
+                const res = await fetch(`https://router.project-osrm.org/route/v1/driving/${deliveryBoylon},${deliveryBoyLat};${customerlon},${customerLat}?overview=full&geometries=geojson`);
+                const data = await res.json();
+                
+                if (data.routes && data.routes[0]) {
+                    // OSRM returns GeoJSON coordinates as [lon, lat], Leaflet expects [lat, lon]
+                    const routeCoordinates = data.routes[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
+                    setPath(routeCoordinates);
+                }
+            } catch (error) {
+                console.log("Error fetching OSRM route", error);
+            }
+        };
+
+        if (deliveryBoyLat && deliveryBoylon && customerLat && customerlon) {
+            fetchRoute();
+        }
+    }, [deliveryBoyLat, deliveryBoylon, customerLat, customerlon]);
 
     const center = [deliveryBoyLat, deliveryBoylon]
 
@@ -43,7 +65,7 @@ function DeliveryBoyTracking({ data }) {
              <Popup>Delivery Boy</Popup>
              </Marker>
               <Marker position={[customerLat,customerlon]} icon={customerIcon}>
-             <Popup>Delivery Boy</Popup>
+             <Popup>Customer</Popup>
              </Marker>
 
 
