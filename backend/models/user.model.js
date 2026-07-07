@@ -63,7 +63,16 @@ coordinates:{type:[Number],default:[0,0]}
    favorites:[{
        type:mongoose.Schema.Types.ObjectId,
        ref:"Shop"
-   }]
+   }],
+   referralCode: {
+       type: String,
+       unique: true,
+       sparse: true
+   },
+   walletBalance: {
+       type: Number,
+       default: 0
+   }
   
 }, { timestamps: true })
 

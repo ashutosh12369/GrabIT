@@ -4,7 +4,7 @@ import genToken from "../utils/token.js"
 import { sendOtpMail } from "../utils/mail.js"
 export const signUp=async (req,res) => {
     try {
-        const {fullName,email,password,mobile,role}=req.body
+        const {fullName,email,password,mobile,role, referralCode}=req.body
         let user=await User.findOne({email})
         if(user){
             return res.status(400).json({message:"User Already exist."})
@@ -17,12 +17,27 @@ export const signUp=async (req,res) => {
         }
      
         const hashedPassword=await bcrypt.hash(password,10)
+        
+        let walletBalance = 0;
+        if (referralCode) {
+            const referrer = await User.findOne({ referralCode: referralCode.toUpperCase() });
+            if (referrer) {
+                walletBalance = 50; // Give new user Rs 50
+                referrer.walletBalance += 50; // Give referrer Rs 50
+                await referrer.save();
+            }
+        }
+
+        const newReferralCode = fullName.substring(0, 3).toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
+
         user=await User.create({
             fullName,
             email,
             role,
             mobile,
-            password:hashedPassword
+            password:hashedPassword,
+            referralCode: newReferralCode,
+            walletBalance
         })
 
         const token=await genToken(user._id)
@@ -171,8 +186,10 @@ export const googleAuth=async (req,res) => {
         const {fullName,email,mobile,role}=req.body
         let user=await User.findOne({email})
         if(!user){
+            const newReferralCode = fullName.substring(0, 3).toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
             user=await User.create({
-                fullName,email,mobile,role
+                fullName,email,mobile,role,
+                referralCode: newReferralCode
             })
         }
 

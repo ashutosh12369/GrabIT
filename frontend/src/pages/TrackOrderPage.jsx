@@ -47,6 +47,11 @@ setLiveLocations(prev=>({
             <p className='font-semibold'><span>Items:</span> {shopOrder.shopOrderItems?.map(i=>i.name).join(",")}</p>
             <p><span className='font-semibold'>Subtotal:</span> {shopOrder.subtotal}</p>
             <p className='mt-6'><span className='font-semibold'>Delivery address:</span> {currentOrder.deliveryAddress?.text}</p>
+            {currentOrder.scheduledFor && (
+                <p className='mt-2 bg-blue-50 text-blue-800 p-3 rounded-lg font-bold flex items-center gap-2'>
+                    📅 Scheduled For: {new Date(currentOrder.scheduledFor).toLocaleString()}
+                </p>
+            )}
          </div>
          <div className='my-4'>
             {/* Progress Bar */}

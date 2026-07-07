@@ -29,9 +29,15 @@ function CheckOut() {
   const [addressInput, setAddressInput] = useState("")
   const [paymentMethod, setPaymentMethod] = useState("cod")
   const [orderNotes, setOrderNotes] = useState("")
+  const [promoCode, setPromoCode] = useState("")
+  const [discount, setDiscount] = useState(0)
+  const [eta, setEta] = useState("")
+  const [useWallet, setUseWallet] = useState(false)
+  const [scheduledFor, setScheduledFor] = useState("")
   const navigate=useNavigate()
   const dispatch = useDispatch()
   const apiKey = import.meta.env.VITE_GEOAPIKEY
+  const { userData } = useSelector(state => state.user)
 
 
 
@@ -83,7 +89,9 @@ function CheckOut() {
         },
         totalAmount:AmountWithDeliveryFee,
         notes: orderNotes,
-        cartItems
+        cartItems,
+        useWallet,
+        scheduledFor: scheduledFor ? new Date(scheduledFor).toISOString() : null
       },{withCredentials:true})
 
       if(paymentMethod=="cod"){
@@ -146,6 +154,7 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
           shopIds
         }, { withCredentials: true })
         setDeliveryFee(res.data.deliveryFee || 0)
+        setEta(res.data.eta || "")
       } catch (err) {
         console.log("Error calculating fee", err)
       }
@@ -153,7 +162,25 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
     fetchFee()
   }, [location, cartItems])
 
-  const AmountWithDeliveryFee=totalAmount+deliveryFee
+  const handleApplyPromo = async () => {
+    try {
+      if (!promoCode) return;
+      const shopIds = [...new Set(cartItems.map(item => item.shop))]
+      const res = await axios.post(`${serverUrl}/api/order/apply-coupon`, {
+        code: promoCode,
+        subtotal: totalAmount,
+        shopIds
+      }, { withCredentials: true })
+      setDiscount(res.data.discount)
+      alert(res.data.message)
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to apply coupon")
+      setDiscount(0)
+    }
+  }
+
+  const baseTotal = totalAmount + deliveryFee - discount;
+  const AmountWithDeliveryFee = useWallet ? Math.max(0, baseTotal - (userData?.walletBalance || 0)) : baseTotal;
 
   return (
     <div className='min-h-screen bg-[#fff9f6] flex items-center justify-center p-6'>
@@ -164,7 +191,10 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
         <h1 className='text-2xl font-bold text-gray-800'>Checkout</h1>
 
         <section>
-          <h2 className='text-lg font-semibold mb-2 flex items-center gap-2 text-gray-800'><IoLocationSharp className='text-[#ff4d2d]' /> Delivery Location</h2>
+          <div className='flex justify-between items-center mb-2'>
+              <h2 className='text-lg font-semibold flex items-center gap-2 text-gray-800'><IoLocationSharp className='text-[#ff4d2d]' /> Delivery Location</h2>
+              {eta && <span className='bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full'>{eta}</span>}
+          </div>
           <div className='flex gap-2 mb-3'>
             <input type="text" className='flex-1 border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff4d2d]' placeholder='Enter Your Delivery Address..' value={addressInput} onChange={(e) => setAddressInput(e.target.value)} />
             <button className='bg-[#ff4d2d] hover:bg-[#e64526] text-white px-3 py-2 rounded-lg flex items-center justify-center' onClick={getLatLngByAddress}><IoSearchOutline size={17} /></button>
@@ -241,9 +271,48 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
   <span>Delivery Fee</span>
   <span>{deliveryFee==0?"Free":deliveryFee}</span>
 </div>
-<div className='flex justify-between text-lg font-bold text-[#ff4d2d] pt-2'>
+{discount > 0 && (
+  <div className='flex justify-between text-green-600 font-medium'>
+    <span>Discount</span>
+    <span>-₹{discount}</span>
+  </div>
+)}
+{useWallet && userData?.walletBalance > 0 && (
+  <div className='flex justify-between text-green-600 font-medium'>
+    <span>Wallet Applied</span>
+    <span>-₹{Math.min(userData.walletBalance, totalAmount + deliveryFee - discount)}</span>
+  </div>
+)}
+<div className='flex justify-between text-lg font-bold text-[#ff4d2d] pt-2 border-t mt-2'>
     <span>Total</span>
   <span>{AmountWithDeliveryFee}</span>
+</div>
+
+{userData?.walletBalance > 0 && (
+  <div className='pt-4'>
+    <label className='flex items-center gap-2 cursor-pointer'>
+      <input type="checkbox" className='w-4 h-4 text-[#ff4d2d] focus:ring-[#ff4d2d]' checked={useWallet} onChange={() => setUseWallet(!useWallet)} />
+      <span className='text-sm font-semibold text-gray-700'>Use Wallet Balance (₹{userData.walletBalance})</span>
+    </label>
+  </div>
+)}
+
+<div className='pt-4'>
+  <label className='block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2'>
+    📅 Schedule Delivery (Optional)
+  </label>
+  <input 
+    type="datetime-local" 
+    className='w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff4d2d]' 
+    value={scheduledFor} 
+    onChange={(e) => setScheduledFor(e.target.value)} 
+    min={new Date().toISOString().slice(0, 16)}
+  />
+</div>
+
+<div className='pt-2 flex gap-2 mt-4'>
+  <input type="text" className='flex-1 border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff4d2d] uppercase' placeholder='PROMO CODE' value={promoCode} onChange={(e) => setPromoCode(e.target.value)} />
+  <button className='bg-gray-800 hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold' onClick={handleApplyPromo}>Apply</button>
 </div>
 
 <div className='pt-2'>

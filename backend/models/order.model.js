@@ -47,6 +47,10 @@ otpExpires:{
 deliveredAt:{
     type:Date,
     default:null
+},
+scheduledFor: {
+    type: Date,
+    default: null
 }
 
 }, { timestamps: true })

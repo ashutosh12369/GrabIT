@@ -40,6 +40,11 @@ const dispatch=useDispatch()
                     <span className='font-bold'>Notes:</span> {data.notes}
                   </div>
                 )}
+                {data?.scheduledFor && (
+                  <div className='mt-1 p-2 bg-blue-50 border border-blue-200 rounded text-blue-800 w-full font-bold flex items-center gap-2'>
+                    📅 Scheduled For: {new Date(data.scheduledFor).toLocaleString()}
+                  </div>
+                )}
             </div>
 
             <div className='flex space-x-4 overflow-x-auto pb-2'>

@@ -124,3 +124,38 @@ export const getShopByCity=async (req,res) => {
         return res.status(500).json({message:`get shop by city error ${error}`})
     }
 }
+
+export const addShopReview = async (req, res) => {
+    try {
+        const { shopId } = req.params;
+        const { rating, comment } = req.body;
+
+        if (!rating || !comment) {
+            return res.status(400).json({ message: "Rating and comment are required" });
+        }
+
+        const shop = await Shop.findById(shopId);
+        if (!shop) {
+            return res.status(400).json({ message: "Shop not found" });
+        }
+
+        // Check if user already reviewed
+        const existingReview = shop.reviews.find(r => r.user.toString() === req.userId.toString());
+        if (existingReview) {
+            return res.status(400).json({ message: "You have already reviewed this shop" });
+        }
+
+        shop.reviews.push({
+            user: req.userId,
+            rating: Number(rating),
+            comment
+        });
+
+        await shop.save();
+        await shop.populate("reviews.user", "fullName profilePicture");
+
+        return res.status(200).json({ message: "Review added successfully", shop });
+    } catch (error) {
+        return res.status(500).json({ message: `Add shop review error: ${error}` });
+    }
+}

@@ -26,6 +26,7 @@ function SignUp() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [mobile, setMobile] = useState("")
+  const [referralCode, setReferralCode] = useState("")
   const [err, setErr] = useState("")
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
@@ -34,7 +35,7 @@ function SignUp() {
     setLoading(true)
     try {
       const result = await axios.post(`${serverUrl}/api/auth/signup`, {
-        fullName, email, password, mobile, role
+        fullName, email, password, mobile, role, referralCode
       }, { withCredentials: true })
       dispatch(setUserData(result.data))
       setErr("")
@@ -48,13 +49,14 @@ function SignUp() {
   const handleGoogleAuth = async () => {
     if (!mobile) return setErr("Mobile number is required")
     const provider = new GoogleAuthProvider()
-    const result = await signInWithPopup(auth, provider)
     try {
+      const result = await signInWithPopup(auth, provider)
       const { data } = await axios.post(`${serverUrl}/api/auth/google-auth`, {
         fullName: result.user.displayName,
         email: result.user.email,
         role,
-        mobile
+        mobile,
+        referralCode
       }, { withCredentials: true })
       dispatch(setUserData(data))
     } catch (error) {
@@ -64,7 +66,7 @@ function SignUp() {
 
   return (
     <div className='min-h-screen w-full flex items-center justify-center p-4' style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)' }}>
-      <div className='grabit-card w-full max-w-md p-8 fade-in'>
+      <div className='grabit-card w-full max-w-md p-8 fade-in bg-white rounded-2xl shadow-xl'>
         {/* Brand */}
         <div className='flex items-center gap-2 mb-2'>
           <div className='w-9 h-9 bg-gradient-to-br from-green-600 to-green-400 rounded-xl flex items-center justify-center shadow'>
@@ -77,19 +79,25 @@ function SignUp() {
         {/* Full Name */}
         <div className='mb-4'>
           <label className='block text-gray-700 font-medium mb-1 text-sm'>Full Name</label>
-          <input className='grabit-input' type="text" placeholder='Enter your full name' onChange={e => setFullName(e.target.value)} value={fullName} />
+          <input className='w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500' type="text" placeholder='Enter your full name' onChange={e => setFullName(e.target.value)} value={fullName} />
         </div>
 
         {/* Email */}
         <div className='mb-4'>
           <label className='block text-gray-700 font-medium mb-1 text-sm'>Email</label>
-          <input className='grabit-input' type="email" placeholder='Enter your email' onChange={e => setEmail(e.target.value)} value={email} />
+          <input className='w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500' type="email" placeholder='Enter your email' onChange={e => setEmail(e.target.value)} value={email} />
         </div>
 
         {/* Mobile */}
         <div className='mb-4'>
           <label className='block text-gray-700 font-medium mb-1 text-sm'>Mobile Number</label>
-          <input className='grabit-input' type="text" placeholder='Enter your mobile number' onChange={e => setMobile(e.target.value)} value={mobile} />
+          <input className='w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500' type="text" placeholder='Enter your mobile number' onChange={e => setMobile(e.target.value)} value={mobile} />
+        </div>
+        
+        {/* Referral Code */}
+        <div className='mb-4'>
+          <label className='block text-gray-700 font-medium mb-1 text-sm'>Referral Code (Optional)</label>
+          <input className='w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 uppercase' type="text" placeholder='e.g. ASH123' onChange={e => setReferralCode(e.target.value)} value={referralCode} />
         </div>
 
         {/* Password */}
@@ -97,7 +105,7 @@ function SignUp() {
           <label className='block text-gray-700 font-medium mb-1 text-sm'>Password</label>
           <div className='relative'>
             <input
-              className='grabit-input pr-10'
+              className='w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 pr-10'
               type={showPassword ? "text" : "password"}
               placeholder='Min 6 characters'
               onChange={e => setPassword(e.target.value)}
@@ -132,7 +140,7 @@ function SignUp() {
 
         {err && <p className='text-red-500 text-sm text-center mb-3'>⚠️ {err}</p>}
 
-        <button className='btn-primary w-full py-3 text-base mb-3' onClick={handleSignUp} disabled={loading}>
+        <button className='bg-green-600 hover:bg-green-700 text-white font-bold w-full py-3 rounded-xl text-base mb-3' onClick={handleSignUp} disabled={loading}>
           {loading ? <ClipLoader size={18} color='white' /> : "Create Account"}
         </button>
 

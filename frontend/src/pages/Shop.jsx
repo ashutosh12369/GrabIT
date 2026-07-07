@@ -11,6 +11,7 @@ function Shop() {
     const {shopId}=useParams()
     const [items,setItems]=useState([])
     const [shop,setShop]=useState([])
+    const [newReview, setNewReview] = useState({ rating: 0, comment: "" })
     const navigate=useNavigate()
     const handleShop=async () => {
         try {
@@ -19,6 +20,20 @@ function Shop() {
            setItems(result.data.items)
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    const handleSubmitReview = async () => {
+        try {
+            if (newReview.rating === 0 || !newReview.comment) {
+                alert("Please provide a rating and a comment.")
+                return;
+            }
+            const result = await axios.post(`${serverUrl}/api/shop/add-review/${shopId}`, newReview, {withCredentials:true})
+            setShop(result.data.shop)
+            setNewReview({ rating: 0, comment: "" })
+        } catch (error) {
+            alert(error.response?.data?.message || "Failed to submit review")
         }
     }
 
@@ -50,13 +65,52 @@ handleShop()
 {items.length>0?(
     <div className='flex flex-wrap justify-center gap-8'>
         {items.map((item)=>(
-            <FoodCard data={item}/>
+            <FoodCard key={item._id} data={item}/>
         ))}
     </div>
 ):<p className='text-center text-gray-500 text-lg'>No Items Available</p>}
 </div>
 
+{/* Reviews Section */}
+<div className='max-w-7xl mx-auto px-6 py-10 border-t'>
+    <h2 className='text-2xl font-bold mb-6 text-gray-800'>Reviews & Ratings</h2>
+    
+    <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+        {/* Submit Review */}
+        <div className='bg-white p-6 rounded-2xl shadow-sm border border-gray-100'>
+            <h3 className='font-bold text-lg mb-4'>Write a Review</h3>
+            <div className='space-y-4'>
+                <div className='flex gap-2'>
+                    {[1, 2, 3, 4, 5].map(star => (
+                        <button key={star} onClick={() => setNewReview(prev => ({...prev, rating: star}))} className={`text-2xl ${newReview.rating >= star ? 'text-yellow-400' : 'text-gray-300'}`}>★</button>
+                    ))}
+                </div>
+                <textarea 
+                    className='w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-[#ff4d2d] focus:outline-none'
+                    placeholder='What did you like or dislike?'
+                    rows='3'
+                    value={newReview.comment}
+                    onChange={e => setNewReview(prev => ({...prev, comment: e.target.value}))}
+                ></textarea>
+                <button onClick={handleSubmitReview} className='bg-[#ff4d2d] text-white px-6 py-2 rounded-lg font-semibold hover:bg-[#e64526] transition'>Submit Review</button>
+            </div>
+        </div>
 
+        {/* Display Reviews */}
+        <div className='space-y-4 max-h-[400px] overflow-y-auto pr-2'>
+            {shop.reviews && shop.reviews.length > 0 ? shop.reviews.map((rev, idx) => (
+                <div key={idx} className='bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex gap-4'>
+                    <img src={rev.user?.profilePicture || "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"} className='w-10 h-10 rounded-full object-cover' />
+                    <div>
+                        <p className='font-bold text-sm text-gray-800'>{rev.user?.fullName}</p>
+                        <div className='text-yellow-400 text-xs mb-1'>{"★".repeat(rev.rating)}{"☆".repeat(5-rev.rating)}</div>
+                        <p className='text-gray-600 text-sm'>{rev.comment}</p>
+                    </div>
+                </div>
+            )) : <p className='text-gray-500'>No reviews yet. Be the first to review!</p>}
+        </div>
+    </div>
+</div>
 
     </div>
   )

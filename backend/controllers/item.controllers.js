@@ -146,7 +146,7 @@ export const getItemByCity = async (req, res) => {
 export const getItemsByShop=async (req,res) => {
     try {
         const {shopId}=req.params
-        const shop=await Shop.findById(shopId).populate("items")
+        const shop=await Shop.findById(shopId).populate("items").populate("reviews.user", "fullName profilePicture")
         if(!shop){
             return res.status(400).json("shop not found")
         }

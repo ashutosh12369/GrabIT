@@ -227,6 +227,27 @@ function ProfilePage() {
                 </div>
               </div>
             )}
+          {/* ===== WALLET & REFERRAL CARD ===== */}
+          <div className='grabit-card p-6 md:p-8 fade-in'>
+            <h2 className='text-xl font-black text-gray-800 mb-4 flex items-center gap-2'>
+              💰 Wallet & Referrals
+            </h2>
+            <div className='flex items-center gap-3 p-4 bg-green-50 rounded-xl border border-green-200 mb-4'>
+              <div className='flex-1'>
+                <p className='text-sm text-gray-600 font-medium'>Wallet Balance</p>
+                <p className='text-3xl font-black text-green-700'>₹{userData?.walletBalance || 0}</p>
+              </div>
+            </div>
+            {userData?.referralCode && (
+              <div className='bg-gray-50 p-4 rounded-xl border border-gray-200'>
+                <p className='text-sm text-gray-600 font-medium mb-1'>Your Referral Code</p>
+                <div className='flex items-center justify-between'>
+                  <p className='text-lg font-bold text-gray-800 tracking-wider'>{userData.referralCode}</p>
+                  <button className='text-sm text-green-600 font-bold hover:underline' onClick={() => navigator.clipboard.writeText(userData.referralCode)}>Copy</button>
+                </div>
+                <p className='text-xs text-gray-500 mt-2'>Share this code with friends. You both get ₹50 in your wallet when they sign up!</p>
+              </div>
+            )}
           </div>
 
           {/* ===== CHANGE PASSWORD CARD ===== */}

@@ -14,9 +14,21 @@ let instance = new RazorPay({
 
 export const placeOrder = async (req, res) => {
     try {
-        const { cartItems, paymentMethod, deliveryAddress, totalAmount, notes } = req.body
-        if (!cartItems || cartItems.length == 0) {
-            return res.status(400).json({ message: "cart is empty" })
+        const { items, deliveryAddress, paymentMethod, totalAmount, notes, useWallet, scheduledFor } = req.body;
+        const userId = req.userId;
+
+        // Check if user has sufficient wallet balance if useWallet is true
+        let user = await User.findById(userId);
+        if (!user) return res.status(400).json({ message: "User not found" });
+
+        let amountToDeduct = 0;
+        if (useWallet && user.walletBalance > 0) {
+            amountToDeduct = Math.min(user.walletBalance, totalAmount);
+        }
+
+        // Validate items...
+        if (!items || Object.keys(items).length === 0) {
+            return res.status(400).json({ message: "Items are required" })
         }
         if (!deliveryAddress.text || !deliveryAddress.latitude || !deliveryAddress.longitude) {
             return res.status(400).json({ message: "send complete deliveryAddress" })
@@ -24,7 +36,7 @@ export const placeOrder = async (req, res) => {
 
         const groupItemsByShop = {}
 
-        cartItems.forEach(item => {
+        items.forEach(item => {
             const shopId = item.shop
             if (!groupItemsByShop[shopId]) {
                 groupItemsByShop[shopId] = []
@@ -71,9 +83,16 @@ export const placeOrder = async (req, res) => {
                 totalAmount,
                 notes: notes || "",
                 shopOrders,
+                scheduledFor: scheduledFor || null,
                 razorpayOrderId: razorOrder.id,
                 payment: false
             })
+
+            // Deduct wallet balance for online payment
+            if (useWallet && amountToDeduct > 0) {
+                user.walletBalance -= amountToDeduct;
+                await user.save();
+            }
 
             return res.status(200).json({
                 razorOrder,
@@ -88,8 +107,15 @@ export const placeOrder = async (req, res) => {
             deliveryAddress,
             totalAmount,
             notes: notes || "",
-            shopOrders
+            shopOrders,
+            scheduledFor: scheduledFor || null
         })
+        
+        // Deduct wallet balance
+        if (useWallet && amountToDeduct > 0) {
+            user.walletBalance -= amountToDeduct;
+            await user.save();
+        }
 
         await newOrder.populate("shopOrders.shopOrderItems.item", "name image price")
         await newOrder.populate("shopOrders.shop", "name")
@@ -162,10 +188,56 @@ export const calculateFee = async (req, res) => {
         // Basic calculation: ₹20 base + ₹10 per km
         let fee = 20 + Math.floor(maxDistance * 10);
         if (fee > 200) fee = 200; // Cap at 200
+        
+        // Estimated Delivery Time calculation: base 15 mins + 3 mins per km
+        let etaMinutes = 15 + Math.floor(maxDistance * 3);
+        const eta = `Arriving in ~${etaMinutes} mins`;
 
-        return res.status(200).json({ deliveryFee: fee })
+        return res.status(200).json({ deliveryFee: fee, eta, etaMinutes })
     } catch (error) {
         return res.status(500).json({ message: `calculate fee error ${error}` })
+    }
+}
+
+import Coupon from "../models/coupon.model.js";
+
+export const applyCoupon = async (req, res) => {
+    try {
+        const { code, subtotal, shopIds } = req.body;
+        
+        if (!code) {
+            return res.status(400).json({ message: "Coupon code is required" });
+        }
+
+        const coupon = await Coupon.findOne({ code: code.toUpperCase(), isActive: true });
+        
+        if (!coupon) {
+            return res.status(400).json({ message: "Invalid or inactive coupon" });
+        }
+        
+        if (new Date() > new Date(coupon.validUntil)) {
+            return res.status(400).json({ message: "Coupon has expired" });
+        }
+
+        if (subtotal < coupon.minOrderAmount) {
+            return res.status(400).json({ message: `Minimum order amount for this coupon is ₹${coupon.minOrderAmount}` });
+        }
+
+        if (coupon.shop && !shopIds.includes(coupon.shop.toString())) {
+            return res.status(400).json({ message: "This coupon is not valid for the selected shops" });
+        }
+
+        let discount = 0;
+        if (coupon.discountType === 'percentage') {
+            discount = (subtotal * coupon.value) / 100;
+        } else {
+            discount = coupon.value;
+        }
+
+        return res.status(200).json({ discount, message: "Coupon applied successfully" });
+
+    } catch (error) {
+        return res.status(500).json({ message: `apply coupon error: ${error}` });
     }
 }
 
@@ -245,6 +317,7 @@ export const getMyOrders = async (req, res) => {
                 paymentMethod: order.paymentMethod,
                 user: order.user,
                 notes: order.notes,
+                scheduledFor: order.scheduledFor,
                 shopOrders: order.shopOrders.find(o => o.owner._id.toString() == req.userId.toString()),
                 createdAt: order.createdAt,
                 deliveryAddress: order.deliveryAddress,
