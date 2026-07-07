@@ -59,8 +59,6 @@ const userSlice = createSlice({
       localStorage.setItem('totalAmount', state.totalAmount.toString())
     },
 
-    ,
-
     updateQuantity: (state, action) => {
       const { id, quantity } = action.payload
       const item = state.cartItems.find(i => i.id == id)
@@ -90,7 +88,6 @@ const userSlice = createSlice({
       localStorage.removeItem('totalAmount')
     }
 
-    ,
     updateOrderStatus: (state, action) => {
       const { orderId, shopId, status } = action.payload
       const order = state.myOrders.find(o => o._id == orderId)
