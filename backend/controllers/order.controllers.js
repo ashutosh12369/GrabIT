@@ -367,7 +367,7 @@ export const updateOrderStatus = async (req, res) => {
                 location: {
                     $near: {
                         $geometry: { type: "Point", coordinates: [Number(longitude), Number(latitude)] },
-                        $maxDistance: 5000
+                        $maxDistance: 500000 // 500km radius for easier testing
                     }
                 }
             })
