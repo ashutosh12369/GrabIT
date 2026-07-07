@@ -177,10 +177,14 @@ function Nav() {
         {/* Avatar + dropdown */}
         <div className='relative'>
           <div
-            className='w-9 h-9 rounded-full flex items-center justify-center bg-gradient-to-br from-green-600 to-green-400 text-white text-base font-bold shadow-md cursor-pointer select-none'
+            className='w-9 h-9 rounded-full flex items-center justify-center bg-gradient-to-br from-green-600 to-green-400 text-white text-base font-bold shadow-md cursor-pointer select-none overflow-hidden'
             onClick={() => setShowInfo(prev => !prev)}
           >
-            {avatarLetter}
+            {userData?.profilePicture ? (
+              <img src={userData.profilePicture} alt="" className='w-full h-full object-cover' />
+            ) : (
+              avatarLetter
+            )}
           </div>
 
           {showInfo && (
@@ -188,6 +192,9 @@ function Nav() {
               <div className='text-[15px] font-semibold text-gray-800'>{userData?.fullName}</div>
               <div className='text-xs text-green-600 font-medium capitalize bg-green-50 px-2 py-0.5 rounded-full w-fit'>{userData?.role}</div>
               <hr className='border-green-100' />
+              <button className='text-left text-sm text-gray-600 hover:text-green-700 font-medium' onClick={() => { navigate('/profile'); setShowInfo(false) }}>
+                My Profile
+              </button>
               {userData?.role === "user" && (
                 <button className='text-left text-sm text-gray-600 hover:text-green-700 font-medium' onClick={() => { navigate('/my-orders'); setShowInfo(false) }}>
                   My Orders

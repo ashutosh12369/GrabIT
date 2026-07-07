@@ -23,6 +23,7 @@ import TrackOrderPage from './pages/TrackOrderPage'
 import Shop from './pages/Shop'
 import AdminPanel from './pages/AdminPanel'
 import SupportChat from './pages/SupportChat'
+import ProfilePage from './pages/ProfilePage'
 import ChatbotWidget from './components/ChatbotWidget'
 import { io } from 'socket.io-client'
 import { setSocket } from './redux/userSlice'
@@ -72,6 +73,7 @@ function App() {
         <Route path='/shop/:shopId' element={userData ? <Shop /> : <Navigate to={"/signin"} />} />
         <Route path='/admin' element={userData?.role === 'admin' ? <AdminPanel /> : <Navigate to={"/"} />} />
         <Route path='/support' element={userData ? <SupportChat /> : <Navigate to={"/signin"} />} />
+        <Route path='/profile' element={userData ? <ProfilePage /> : <Navigate to={"/signin"} />} />
       </Routes>
       {userData && <ChatbotWidget />}
     </>

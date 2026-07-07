@@ -48,7 +48,18 @@ const userSchema = new mongoose.Schema({
    location:{
 type:{type:String,enum:['Point'],default:'Point'},
 coordinates:{type:[Number],default:[0,0]}
-   }
+   },
+   profilePicture:{
+       type:String,
+       default:""
+   },
+   savedAddresses:[{
+       label:{type:String, required:true},
+       address:{type:String, required:true},
+       city:{type:String},
+       state:{type:String},
+       coordinates:{type:[Number], default:[0,0]}
+   }]
   
 }, { timestamps: true })
 

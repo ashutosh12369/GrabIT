@@ -137,6 +137,35 @@ export const resetPassword=async (req,res) => {
     }
 }
 
+export const changePassword=async (req,res) => {
+    try {
+        const {currentPassword, newPassword}=req.body
+        if(!currentPassword || !newPassword){
+            return res.status(400).json({message:"Both current and new password are required"})
+        }
+        if(newPassword.length < 6){
+            return res.status(400).json({message:"New password must be at least 6 characters"})
+        }
+        const user=await User.findById(req.userId)
+        if(!user){
+            return res.status(400).json({message:"User not found"})
+        }
+        if(!user.password){
+            return res.status(400).json({message:"Google sign-in users cannot change password"})
+        }
+        const isMatch=await bcrypt.compare(currentPassword, user.password)
+        if(!isMatch){
+            return res.status(400).json({message:"Current password is incorrect"})
+        }
+        const hashedPassword=await bcrypt.hash(newPassword, 10)
+        user.password=hashedPassword
+        await user.save()
+        return res.status(200).json({message:"Password changed successfully"})
+    } catch (error) {
+        return res.status(500).json(`change password error ${error}`)
+    }
+}
+
 export const googleAuth=async (req,res) => {
     try {
         const {fullName,email,mobile,role}=req.body
