@@ -146,62 +146,63 @@ getCurrentOrder()
 handleTodayDeliveries()
   },[userData])
   return (
-    <div className='w-screen min-h-screen flex flex-col gap-5 items-center bg-[#fff9f6] overflow-y-auto'>
+  return (
+    <div className='w-full min-h-screen flex flex-col gap-5 items-center pb-16 overflow-y-auto' style={{ backgroundColor: 'var(--bg)' }}>
       <Nav/>
-      <div className='w-full max-w-[800px] flex flex-col gap-5 items-center'>
-    <div className='bg-white rounded-2xl shadow-md p-5 flex flex-col justify-start items-center w-[90%] border border-orange-100 text-center gap-2'>
-<h1 className='text-xl font-bold text-[#16a34a]'>Welcome, {userData.fullName}</h1>
-<p className='text-[#16a34a] '><span className='font-semibold'>Latitude:</span> {deliveryBoyLocation?.lat}, <span className='font-semibold'>Longitude:</span> {deliveryBoyLocation?.lon}</p>
+      <div className='w-full max-w-[800px] flex flex-col gap-5 items-center mt-6'>
+    <div className='rounded-2xl shadow-sm p-5 flex flex-col justify-start items-center w-[90%] border border-green-100 dark:border-gray-700 text-center gap-2' style={{ backgroundColor: 'var(--card)' }}>
+<h1 className='text-xl font-bold text-green-600 dark:text-green-500'>Welcome, {userData.fullName}</h1>
+<p className='text-gray-600 dark:text-gray-400 text-sm'><span className='font-semibold'>Latitude:</span> {deliveryBoyLocation?.lat || '...'}, <span className='font-semibold'>Longitude:</span> {deliveryBoyLocation?.lon || '...'}</p>
     </div>
 
-<div className='bg-white rounded-2xl shadow-md p-5 w-[90%] mb-6 border border-orange-100'>
-  <h1 className='text-lg font-bold mb-3 text-[#16a34a] '>Today Deliveries</h1>
+<div className='rounded-2xl shadow-sm p-5 w-[90%] mb-2 border border-green-100 dark:border-gray-700' style={{ backgroundColor: 'var(--card)' }}>
+  <h1 className='text-lg font-bold mb-3 text-green-600 dark:text-green-500'>Today's Deliveries</h1>
 
   <ResponsiveContainer width="100%" height={200}>
    <BarChart data={todayDeliveries}>
-  <CartesianGrid strokeDasharray="3 3"/>
-  <XAxis dataKey="hour" tickFormatter={(h)=>`${h}:00`}/>
-    <YAxis  allowDecimals={false}/>
-    <Tooltip formatter={(value)=>[value,"orders"]} labelFormatter={label=>`${label}:00`}/>
-      <Bar dataKey="count" fill='#16a34a'/>
+  <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.2}/>
+  <XAxis dataKey="hour" tickFormatter={(h)=>`${h}:00`} stroke="var(--text-muted)"/>
+    <YAxis allowDecimals={false} stroke="var(--text-muted)"/>
+    <Tooltip formatter={(value)=>[value,"orders"]} labelFormatter={label=>`${label}:00`} contentStyle={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)', color: 'var(--text)' }}/>
+      <Bar dataKey="count" fill='#16a34a' radius={[4, 4, 0, 0]}/>
    </BarChart>
   </ResponsiveContainer>
 
-  <div className='max-w-sm mx-auto mt-6 p-6 bg-white rounded-2xl shadow-lg text-center'>
-<h1 className='text-xl font-semibold text-gray-800 mb-2'>Today's Earning</h1>
-<span className='text-3xl font-bold text-green-600'>₹{totalEarning}</span>
+  <div className='max-w-sm mx-auto mt-6 p-6 rounded-2xl shadow-sm text-center border border-green-100 dark:border-gray-700' style={{ backgroundColor: 'var(--bg)' }}>
+<h1 className='text-xl font-semibold mb-2' style={{ color: 'var(--text)' }}>Today's Earning</h1>
+<span className='text-3xl font-bold text-green-600 dark:text-green-500'>₹{totalEarning}</span>
   </div>
 </div>
 
 
-{!currentOrder && <div className='bg-white rounded-2xl p-5 shadow-md w-[90%] border border-orange-100'>
-<h1 className='text-lg font-bold mb-4 flex items-center gap-2'>Available Orders</h1>
+{!currentOrder && <div className='rounded-2xl p-5 shadow-sm w-[90%] border border-green-100 dark:border-gray-700' style={{ backgroundColor: 'var(--card)' }}>
+<h1 className='text-lg font-bold mb-4 flex items-center gap-2' style={{ color: 'var(--text)' }}>Available Orders</h1>
 
 <div className='space-y-4'>
 {availableAssignments?.length>0
 ?
 (
 availableAssignments.map((a,index)=>(
-  <div className='border rounded-lg p-4 flex justify-between items-center' key={index}>
+  <div className='border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex justify-between items-center bg-gray-50 dark:bg-gray-800' key={index}>
    <div>
-    <p className='text-sm font-semibold'>{a?.shopName}</p>
-    <p className='text-sm text-gray-500'><span className='font-semibold'>Delivery Address:</span> {a?.deliveryAddress.text}</p>
-<p className='text-xs text-gray-400'>{a.items.length} items | {a.subtotal}</p>
+    <p className='text-sm font-bold' style={{ color: 'var(--text)' }}>{a?.shopName}</p>
+    <p className='text-sm mt-1' style={{ color: 'var(--text-muted)' }}><span className='font-semibold'>Delivery Address:</span> {a?.deliveryAddress.text}</p>
+<p className='text-xs mt-1' style={{ color: 'var(--text-muted)' }}>{a.items.length} items | ₹{a.subtotal}</p>
    </div>
-   <button className='bg-green-500 text-white px-4 py-1 rounded-lg text-sm hover:bg-green-600' onClick={()=>acceptOrder(a.assignmentId)}>Accept</button>
+   <button className='bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition cursor-pointer' onClick={()=>acceptOrder(a.assignmentId)}>Accept</button>
 
   </div>
 ))
-):<p className='text-gray-400 text-sm'>No Available Orders</p>}
+):<p className='text-sm' style={{ color: 'var(--text-muted)' }}>No Available Orders</p>}
 </div>
 </div>}
 
-{currentOrder && <div className='bg-white rounded-2xl p-5 shadow-md w-[90%] border border-orange-100'>
-<h2 className='text-lg font-bold mb-3'>📦Current Order</h2>
-<div className='border rounded-lg p-4 mb-3'>
-  <p className='font-semibold text-sm'>{currentOrder?.shopOrder.shop.name}</p>
-  <p className='text-sm text-gray-500'>{currentOrder.deliveryAddress.text}</p>
- <p className='text-xs text-gray-400'>{currentOrder.shopOrder.shopOrderItems.length} items | {currentOrder.shopOrder.subtotal}</p>
+{currentOrder && <div className='rounded-2xl p-5 shadow-sm w-[90%] border border-green-100 dark:border-gray-700' style={{ backgroundColor: 'var(--card)' }}>
+<h2 className='text-lg font-bold mb-3' style={{ color: 'var(--text)' }}>📦 Current Order</h2>
+<div className='border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-4 bg-gray-50 dark:bg-gray-800'>
+  <p className='font-bold text-sm' style={{ color: 'var(--text)' }}>{currentOrder?.shopOrder.shop.name}</p>
+  <p className='text-sm mt-1' style={{ color: 'var(--text-muted)' }}>{currentOrder.deliveryAddress.text}</p>
+ <p className='text-xs mt-1' style={{ color: 'var(--text-muted)' }}>{currentOrder.shopOrder.shopOrderItems.length} items | ₹{currentOrder.shopOrder.subtotal}</p>
 </div>
 
  <DeliveryBoyTracking data={{ 
@@ -213,14 +214,14 @@ availableAssignments.map((a,index)=>(
         lat: currentOrder.deliveryAddress.latitude,
         lon: currentOrder.deliveryAddress.longitude
       }}} />
-{!showOtpBox ? <button className='mt-4 w-full bg-green-500 text-white font-semibold py-2 px-4 rounded-xl shadow-md hover:bg-green-600 active:scale-95 transition-all duration-200' onClick={sendOtp} disabled={loading}>
+{!showOtpBox ? <button className='mt-5 w-full bg-green-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:bg-green-700 active:scale-95 transition-all duration-200 cursor-pointer flex justify-center items-center' onClick={sendOtp} disabled={loading}>
 {loading?<ClipLoader size={20} color='white'/> :"Mark As Delivered"}
- </button>:<div className='mt-4 p-4 border rounded-xl bg-gray-50'>
-<p className='text-sm font-semibold mb-2'>Enter Otp send to <span className='text-green-500'>{currentOrder.user.fullName}</span></p>
-<input type="text" className='w-full border px-3 py-2 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-orange-400' placeholder='Enter OTP' onChange={(e)=>setOtp(e.target.value)} value={otp}/>
-{message && <p className='text-center text-green-400 text-2xl mb-4'>{message}</p>}
+ </button>:<div className='mt-5 p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-800'>
+<p className='text-sm font-semibold mb-3' style={{ color: 'var(--text)' }}>Enter OTP sent to <span className='text-green-600 dark:text-green-500 font-bold'>{currentOrder.user.fullName}</span></p>
+<input type="text" className='w-full border border-gray-300 dark:border-gray-600 px-3 py-2 rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white dark:bg-gray-700 text-gray-800 dark:text-white' placeholder='Enter 4-digit OTP' onChange={(e)=>setOtp(e.target.value)} value={otp}/>
+{message && <p className='text-center text-green-500 text-lg font-semibold mb-4'>{message}</p>}
 
-<button className="w-full bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition-all" onClick={verifyOtp}>Submit OTP</button>
+<button className="w-full bg-green-600 text-white py-2.5 rounded-lg font-semibold hover:bg-green-700 transition-all cursor-pointer" onClick={verifyOtp}>Submit OTP</button>
   </div>}
 
   </div>}
