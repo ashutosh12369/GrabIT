@@ -17,6 +17,7 @@ function CreateEditShop() {
   const [address, setAddress] = useState(myShopData?.address || currentAddress || "")
   const [city, setCity] = useState(myShopData?.city || currentCity || "")
   const [state, setState] = useState(myShopData?.state || currentState || "")
+  const [minOrderAmount, setMinOrderAmount] = useState(myShopData?.minOrderAmount || 0)
   const [frontendImage, setFrontendImage] = useState(myShopData?.image || null)
   const [backendImage, setBackendImage] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -33,11 +34,29 @@ function CreateEditShop() {
     e.preventDefault()
     setLoading(true)
     try {
+      let lat = 0;
+      let lng = 0;
+      const apiKey = import.meta.env.VITE_GEOAPIKEY
+      if (apiKey && address) {
+        try {
+          const geoResult = await axios.get(`https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(address + ", " + city)}&apiKey=${apiKey}`)
+          if (geoResult.data.features && geoResult.data.features.length > 0) {
+            lat = geoResult.data.features[0].properties.lat
+            lng = geoResult.data.features[0].properties.lon
+          }
+        } catch (geoError) {
+          console.log("Geocoding failed", geoError)
+        }
+      }
+
       const formData = new FormData()
       formData.append("name", name)
       formData.append("city", city)
       formData.append("state", state)
       formData.append("address", address)
+      formData.append("minOrderAmount", minOrderAmount)
+      formData.append("lat", lat)
+      formData.append("lng", lng)
       if (backendImage) formData.append("image", backendImage)
       const result = await axios.post(`${serverUrl}/api/shop/create-edit`, formData, { withCredentials: true })
       dispatch(setMyShopData(result.data))
@@ -119,6 +138,11 @@ function CreateEditShop() {
             <div>
               <label className='block text-sm font-semibold text-gray-700 mb-1'>Full Address</label>
               <input className='grabit-input' type="text" placeholder='Enter shop address' onChange={e => setAddress(e.target.value)} value={address} />
+            </div>
+
+            <div>
+              <label className='block text-sm font-semibold text-gray-700 mb-1'>Minimum Order Amount (₹)</label>
+              <input className='grabit-input' type="number" placeholder='e.g. 150' onChange={e => setMinOrderAmount(e.target.value)} value={minOrderAmount} min="0" />
             </div>
 
             <button className='btn-primary w-full py-3 text-base mt-2' disabled={loading}>

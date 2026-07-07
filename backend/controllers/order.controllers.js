@@ -35,10 +35,15 @@ export const placeOrder = async (req, res) => {
         const shopOrders = await Promise.all(Object.keys(groupItemsByShop).map(async (shopId) => {
             const shop = await Shop.findById(shopId).populate("owner")
             if (!shop) {
-                return res.status(400).json({ message: "shop not found" })
+                throw new Error(`Shop not found for ID: ${shopId}`)
             }
             const items = groupItemsByShop[shopId]
             const subtotal = items.reduce((sum, i) => sum + Number(i.price) * Number(i.quantity), 0)
+            
+            if (shop.minOrderAmount && subtotal < shop.minOrderAmount) {
+                throw new Error(`Minimum order amount for ${shop.name} is ₹${shop.minOrderAmount}. Your subtotal is ₹${subtotal}.`)
+            }
+
             return {
                 shop: shop._id,
                 owner: shop.owner._id,
@@ -115,6 +120,52 @@ export const placeOrder = async (req, res) => {
         return res.status(201).json(newOrder)
     } catch (error) {
         return res.status(500).json({ message: `place order error ${error}` })
+    }
+}
+
+export const calculateFee = async (req, res) => {
+    try {
+        const { deliveryAddress, shopIds } = req.body
+        if (!deliveryAddress || !deliveryAddress.latitude || !deliveryAddress.longitude) {
+            return res.status(400).json({ message: "delivery address required" })
+        }
+        if (!shopIds || shopIds.length === 0) {
+            return res.status(400).json({ message: "shop ids required" })
+        }
+
+        const shops = await Shop.find({ _id: { $in: shopIds } })
+        let maxDistance = 0
+
+        // Calculate distance using Haversine formula
+        const toRad = (value) => (value * Math.PI) / 180;
+        shops.forEach(shop => {
+            if (shop.location && shop.location.coordinates) {
+                const shopLng = shop.location.coordinates[0];
+                const shopLat = shop.location.coordinates[1];
+                const userLng = deliveryAddress.longitude;
+                const userLat = deliveryAddress.latitude;
+
+                const R = 6371; // km
+                const dLat = toRad(userLat - shopLat);
+                const dLon = toRad(userLng - shopLng);
+                const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                          Math.cos(toRad(shopLat)) * Math.cos(toRad(userLat)) *
+                          Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                const d = R * c; // Distance in km
+                if (d > maxDistance) {
+                    maxDistance = d;
+                }
+            }
+        });
+
+        // Basic calculation: ₹20 base + ₹10 per km
+        let fee = 20 + Math.floor(maxDistance * 10);
+        if (fee > 200) fee = 200; // Cap at 200
+
+        return res.status(200).json({ deliveryFee: fee })
+    } catch (error) {
+        return res.status(500).json({ message: `calculate fee error ${error}` })
     }
 }
 

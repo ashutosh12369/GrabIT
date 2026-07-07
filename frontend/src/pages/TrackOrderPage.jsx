@@ -48,13 +48,42 @@ setLiveLocations(prev=>({
             <p><span className='font-semibold'>Subtotal:</span> {shopOrder.subtotal}</p>
             <p className='mt-6'><span className='font-semibold'>Delivery address:</span> {currentOrder.deliveryAddress?.text}</p>
          </div>
+         <div className='my-4'>
+            {/* Progress Bar */}
+            <div className='flex items-center justify-between relative mb-2'>
+                <div className='absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-200 -z-10 rounded-full'></div>
+                <div className='absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-green-500 -z-10 rounded-full transition-all duration-500' 
+                     style={{width: shopOrder.status === 'pending' ? '0%' : shopOrder.status === 'preparing' ? '33%' : shopOrder.status === 'out of delivery' ? '66%' : shopOrder.status === 'delivered' ? '100%' : '0%'}}>
+                </div>
+                
+                {['pending', 'preparing', 'out of delivery', 'delivered'].map((s, i) => (
+                    <div key={s} className='flex flex-col items-center'>
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                            ['pending', 'preparing', 'out of delivery', 'delivered'].indexOf(shopOrder.status) >= i 
+                            ? 'bg-green-500 text-white shadow-lg' 
+                            : 'bg-gray-300 text-gray-500'
+                        }`}>
+                            {i + 1}
+                        </div>
+                        <span className={`text-[10px] mt-1 capitalize font-medium ${
+                            ['pending', 'preparing', 'out of delivery', 'delivered'].indexOf(shopOrder.status) >= i 
+                            ? 'text-green-600' 
+                            : 'text-gray-400'
+                        }`}>
+                            {s === 'out of delivery' ? 'On The Way' : s}
+                        </span>
+                    </div>
+                ))}
+            </div>
+         </div>
+
          {shopOrder.status!="delivered"?<>
 {shopOrder.assignedDeliveryBoy?
-<div className='text-sm text-gray-700'>
-<p className='font-semibold'><span>Delivery Boy Name:</span> {shopOrder.assignedDeliveryBoy.fullName}</p>
-<p className='font-semibold'><span>Delivery Boy contact No.:</span> {shopOrder.assignedDeliveryBoy.mobile}</p>
-</div>:<p className='font-semibold'>Delivery Boy is not assigned yet.</p>}
-         </>:<p className='text-green-600 font-semibold text-lg'>Delivered</p>}
+<div className='text-sm text-gray-700 bg-blue-50 p-3 rounded-xl border border-blue-100 mt-2'>
+<p className='font-semibold'><span>Delivery Partner:</span> {shopOrder.assignedDeliveryBoy.fullName}</p>
+<p className='font-semibold'><span>Contact:</span> {shopOrder.assignedDeliveryBoy.mobile}</p>
+</div>:<p className='font-semibold text-orange-500 bg-orange-50 p-2 rounded-lg inline-block'>Looking for delivery partner...</p>}
+         </>:<p className='text-green-600 font-bold text-lg bg-green-50 p-3 rounded-xl border border-green-100 text-center mt-2'>🎉 Order Delivered Successfully!</p>}
 
 {(shopOrder.assignedDeliveryBoy && shopOrder.status !== "delivered") && (
   <div className="h-[400px] w-full rounded-2xl overflow-hidden shadow-md">

@@ -3,7 +3,7 @@ import uploadOnCloudinary from "../utils/cloudinary.js";
 
 export const createEditShop=async (req,res) => {
     try {
-       const {name,city,state,address}=req.body
+       const {name,city,state,address, minOrderAmount, lat, lng}=req.body
        let image;
        if(req.file){
         console.log(req.file)
@@ -16,14 +16,20 @@ export const createEditShop=async (req,res) => {
        } else {
            image = "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
        }
+       
+       const locationData = {
+           type: "Point",
+           coordinates: [Number(lng) || 0, Number(lat) || 0]
+       };
+
        let shop=await Shop.findOne({owner:req.userId})
        if(!shop){
         shop=await Shop.create({
-        name,city,state,address,image,owner:req.userId
+        name,city,state,address,image,owner:req.userId, minOrderAmount: minOrderAmount || 0, location: locationData
        })
        }else{
          shop=await Shop.findByIdAndUpdate(shop._id,{
-        name,city,state,address,image,owner:req.userId
+        name,city,state,address,image,owner:req.userId, minOrderAmount: minOrderAmount || 0, location: locationData
        },{new:true})
        }
       

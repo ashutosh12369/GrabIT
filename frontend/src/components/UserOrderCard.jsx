@@ -2,10 +2,30 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { serverUrl } from '../App'
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../redux/userSlice'
 
 function UserOrderCard({ data }) {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [selectedRating, setSelectedRating] = useState({})//itemId:rating
+
+    const handleReorder = () => {
+        data.shopOrders.forEach(shopOrder => {
+            shopOrder.shopOrderItems.forEach(orderItem => {
+                const cartItem = {
+                    id: orderItem.item._id,
+                    name: orderItem.name,
+                    price: orderItem.price,
+                    quantity: orderItem.quantity,
+                    image: orderItem.item.image,
+                    shop: shopOrder.shop._id
+                };
+                dispatch(addToCart(cartItem));
+            });
+        });
+        navigate("/checkout");
+    };
 
     const formatDate = (dateString) => {
         const date = new Date(dateString)
@@ -82,9 +102,12 @@ function UserOrderCard({ data }) {
                 </div>
             ))}
 
-            <div className='flex justify-between items-center border-t pt-2'>
+            <div className='flex justify-between items-center border-t pt-2 mt-4'>
                 <p className='font-semibold'>Total: ₹{data.totalAmount}</p>
-                <button className='bg-[#ff4d2d] hover:bg-[#e64526] text-white px-4 py-2 rounded-lg text-sm' onClick={() => navigate(`/track-order/${data._id}`)}>Track Order</button>
+                <div className='flex gap-2'>
+                    <button className='border border-[#ff4d2d] text-[#ff4d2d] hover:bg-orange-50 px-4 py-2 rounded-lg text-sm' onClick={() => handleReorder()}>Reorder</button>
+                    <button className='bg-[#ff4d2d] hover:bg-[#e64526] text-white px-4 py-2 rounded-lg text-sm' onClick={() => navigate(`/track-order/${data._id}`)}>Track Order</button>
+                </div>
             </div>
 
 

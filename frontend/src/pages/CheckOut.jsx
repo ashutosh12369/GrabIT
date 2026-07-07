@@ -32,8 +32,6 @@ function CheckOut() {
   const navigate=useNavigate()
   const dispatch = useDispatch()
   const apiKey = import.meta.env.VITE_GEOAPIKEY
-  const deliveryFee=totalAmount>500?0:40
-  const AmountWithDeliveryFee=totalAmount+deliveryFee
 
 
 
@@ -135,6 +133,28 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
   useEffect(() => {
     setAddressInput(address)
   }, [address])
+
+  const [deliveryFee, setDeliveryFee] = useState(0)
+
+  useEffect(() => {
+    const fetchFee = async () => {
+      try {
+        if (!location || !location.lat || !location.lon || cartItems.length === 0) return;
+        const shopIds = [...new Set(cartItems.map(item => item.shop))]
+        const res = await axios.post(`${serverUrl}/api/order/calculate-fee`, {
+          deliveryAddress: { latitude: location.lat, longitude: location.lon },
+          shopIds
+        }, { withCredentials: true })
+        setDeliveryFee(res.data.deliveryFee || 0)
+      } catch (err) {
+        console.log("Error calculating fee", err)
+      }
+    }
+    fetchFee()
+  }, [location, cartItems])
+
+  const AmountWithDeliveryFee=totalAmount+deliveryFee
+
   return (
     <div className='min-h-screen bg-[#fff9f6] flex items-center justify-center p-6'>
       <div className=' absolute top-[20px] left-[20px] z-[10]' onClick={() => navigate("/")}>
