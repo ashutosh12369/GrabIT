@@ -1,5 +1,5 @@
 import express from "express"
-import { getCurrentUser, updateUserLocation, updateProfile, addSavedAddress, removeSavedAddress, deleteAccount } from "../controllers/user.controllers.js"
+import { getCurrentUser, updateUserLocation, updateProfile, addSavedAddress, removeSavedAddress, deleteAccount, toggleFavorite } from "../controllers/user.controllers.js"
 import isAuth from "../middlewares/isAuth.js"
 import { upload } from "../middlewares/multer.js"
 
@@ -12,5 +12,6 @@ userRouter.patch('/update-profile',isAuth,upload.single("profilePicture"),update
 userRouter.post('/add-address',isAuth,addSavedAddress)
 userRouter.delete('/remove-address/:addressId',isAuth,removeSavedAddress)
 userRouter.delete('/delete-account',isAuth,deleteAccount)
+userRouter.patch('/toggle-favorite/:shopId',isAuth,toggleFavorite)
 
 export default userRouter

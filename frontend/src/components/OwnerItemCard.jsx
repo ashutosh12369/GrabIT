@@ -17,6 +17,16 @@ function OwnerItemCard({data}) {
         console.log(error)
       }
     }
+
+    const handleToggleAvailability = async () => {
+      try {
+        const result = await axios.patch(`${serverUrl}/api/item/toggle-availability/${data._id}`, {}, {withCredentials:true})
+        dispatch(setMyShopData(result.data))
+      } catch (error) {
+        console.log("Toggle availability error:", error)
+      }
+    }
+
   return (
     <div className='flex bg-white rounded-lg shadow-md overflow-hidden border border-[#ff4d2d] w-full max-w-2xl'>
       <div className='w-36  flex-shrink-0 bg-gray-50'>
@@ -31,6 +41,12 @@ function OwnerItemCard({data}) {
           <div className='flex items-center justify-between'>
             <div className='text-[#ff4d2d] font-bold'>{data.price}</div>
           <div className='flex items-center gap-2'>
+            <button 
+              onClick={handleToggleAvailability}
+              className={`text-xs font-bold px-2 py-1 rounded-lg border cursor-pointer transition ${data.isAvailable !== false ? 'text-green-600 border-green-200 hover:bg-green-50' : 'text-red-500 border-red-200 hover:bg-red-50'}`}
+            >
+              {data.isAvailable !== false ? 'Available' : 'Out of Stock'}
+            </button>
 <div className='p-2 cursor-pointer rounded-full hover:bg-[#ff4d2d]/10  text-[#ff4d2d]' onClick={()=>navigate(`/edit-item/${data._id}`)}>
 <FaPen size={16}/>
 </div>

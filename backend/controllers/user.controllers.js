@@ -124,3 +124,22 @@ export const deleteAccount=async (req,res) => {
         return res.status(500).json({message:`delete account error ${error}`})
     }
 }
+
+export const toggleFavorite=async (req,res) => {
+    try {
+        const {shopId}=req.params
+        const user = await User.findById(req.userId)
+        if(!user) return res.status(400).json({message:"user not found"})
+
+        const isFavorite = user.favorites.includes(shopId)
+        if (isFavorite) {
+            user.favorites = user.favorites.filter(id => id.toString() !== shopId)
+        } else {
+            user.favorites.push(shopId)
+        }
+        await user.save()
+        return res.status(200).json(user)
+    } catch (error) {
+        return res.status(500).json({message:`toggle favorite error ${error}`})
+    }
+}

@@ -67,6 +67,26 @@ export const editItem = async (req, res) => {
     }
 }
 
+export const toggleItemAvailability = async (req, res) => {
+    try {
+        const itemId = req.params.itemId
+        const item = await Item.findById(itemId)
+        if (!item) {
+            return res.status(400).json({ message: "item not found" })
+        }
+        item.isAvailable = !item.isAvailable
+        await item.save()
+        
+        const shop = await Shop.findOne({ owner: req.userId }).populate({
+            path: "items",
+            options: { sort: { updatedAt: -1 } }
+        })
+        return res.status(200).json(shop)
+    } catch (error) {
+        return res.status(500).json({ message: `toggle item availability error ${error}` })
+    }
+}
+
 export const getItemById = async (req, res) => {
     try {
         const itemId = req.params.itemId

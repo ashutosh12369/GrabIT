@@ -59,6 +59,10 @@ coordinates:{type:[Number],default:[0,0]}
        city:{type:String},
        state:{type:String},
        coordinates:{type:[Number], default:[0,0]}
+   }],
+   favorites:[{
+       type:mongoose.Schema.Types.ObjectId,
+       ref:"Shop"
    }]
   
 }, { timestamps: true })

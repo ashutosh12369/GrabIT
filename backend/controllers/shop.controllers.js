@@ -52,16 +52,68 @@ export const getMyShop=async (req,res) => {
 export const getShopByCity=async (req,res) => {
     try {
         const {city}=req.params
+        const { search, cuisine, sort } = req.query
 
-        const shops=await Shop.find({
+        let shops=await Shop.find({
             city:{$regex:new RegExp(`^${city}$`, "i")},
             isApproved: true,
             isActive: true
         }).populate('items')
+        
         if(!shops){
             return res.status(400).json({message:"shops not found"})
         }
-        return res.status(200).json(shops)
+
+        // Add calculated fields for each shop (average rating, average price, cuisines)
+        let enrichedShops = shops.map(shop => {
+            const items = shop.items || []
+            
+            // Calculate average rating across all items
+            let totalRating = 0
+            let ratingCount = 0
+            items.forEach(item => {
+                if(item.rating && item.rating.average > 0) {
+                    totalRating += item.rating.average
+                    ratingCount++
+                }
+            })
+            const avgRating = ratingCount > 0 ? totalRating / ratingCount : 0
+
+            // Calculate average price across all items
+            const avgPrice = items.length > 0 ? items.reduce((sum, item) => sum + item.price, 0) / items.length : 0
+
+            // Get unique cuisines
+            const cuisines = [...new Set(items.map(item => item.category))]
+
+            return {
+                ...shop.toObject(),
+                avgRating,
+                avgPrice,
+                cuisines
+            }
+        })
+
+        // Apply Search
+        if (search) {
+            const searchRegex = new RegExp(search, "i")
+            enrichedShops = enrichedShops.filter(shop => searchRegex.test(shop.name))
+        }
+
+        // Apply Cuisine Filter
+        if (cuisine && cuisine !== "All") {
+            enrichedShops = enrichedShops.filter(shop => shop.cuisines.includes(cuisine))
+        }
+
+        // Apply Sorting
+        if (sort === "rating") {
+            enrichedShops.sort((a, b) => b.avgRating - a.avgRating)
+        } else if (sort === "priceLow") {
+            enrichedShops.sort((a, b) => a.avgPrice - b.avgPrice)
+        } else if (sort === "priceHigh") {
+            enrichedShops.sort((a, b) => b.avgPrice - a.avgPrice)
+        }
+
+        return res.status(200).json(enrichedShops)
     } catch (error) {
         return res.status(500).json({message:`get shop by city error ${error}`})
     }

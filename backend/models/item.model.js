@@ -42,6 +42,10 @@ const itemSchema = new mongoose.Schema({
    rating:{
     average:{type:Number,default:0},
     count:{type:Number,default:0}
+   },
+   isAvailable:{
+       type:Boolean,
+       default:true
    }
 }, { timestamps: true })
 

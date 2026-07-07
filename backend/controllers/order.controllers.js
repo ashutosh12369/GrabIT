@@ -14,7 +14,7 @@ let instance = new RazorPay({
 
 export const placeOrder = async (req, res) => {
     try {
-        const { cartItems, paymentMethod, deliveryAddress, totalAmount } = req.body
+        const { cartItems, paymentMethod, deliveryAddress, totalAmount, notes } = req.body
         if (!cartItems || cartItems.length == 0) {
             return res.status(400).json({ message: "cart is empty" })
         }
@@ -64,6 +64,7 @@ export const placeOrder = async (req, res) => {
                 paymentMethod,
                 deliveryAddress,
                 totalAmount,
+                notes: notes || "",
                 shopOrders,
                 razorpayOrderId: razorOrder.id,
                 payment: false
@@ -81,6 +82,7 @@ export const placeOrder = async (req, res) => {
             paymentMethod,
             deliveryAddress,
             totalAmount,
+            notes: notes || "",
             shopOrders
         })
 
@@ -191,6 +193,7 @@ export const getMyOrders = async (req, res) => {
                 _id: order._id,
                 paymentMethod: order.paymentMethod,
                 user: order.user,
+                notes: order.notes,
                 shopOrders: order.shopOrders.find(o => o.owner._id.toString() == req.userId.toString()),
                 createdAt: order.createdAt,
                 deliveryAddress: order.deliveryAddress,

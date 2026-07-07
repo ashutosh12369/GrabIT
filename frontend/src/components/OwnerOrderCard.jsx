@@ -35,6 +35,11 @@ const dispatch=useDispatch()
             <div className='flex items-start flex-col gap-2 text-gray-600 text-sm'>
                 <p>{data?.deliveryAddress?.text}</p>
                 <p className='text-xs text-gray-500'>Lat: {data?.deliveryAddress.latitude} , Lon {data?.deliveryAddress.longitude}</p>
+                {data?.notes && (
+                  <div className='mt-1 p-2 bg-yellow-50 border border-yellow-200 rounded text-yellow-800 w-full'>
+                    <span className='font-bold'>Notes:</span> {data.notes}
+                  </div>
+                )}
             </div>
 
             <div className='flex space-x-4 overflow-x-auto pb-2'>

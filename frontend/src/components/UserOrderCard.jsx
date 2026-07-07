@@ -47,6 +47,12 @@ function UserOrderCard({ data }) {
                 </div>
             </div>
 
+            {data?.notes && (
+                <div className='mt-1 p-2 bg-yellow-50 border border-yellow-200 rounded text-yellow-800 text-sm'>
+                    <span className='font-bold'>Notes:</span> {data.notes}
+                </div>
+            )}
+
             {data.shopOrders.map((shopOrder, index) => (
                 <div className='"border rounded-lg p-3 bg-[#fffaf7] space-y-3' key={index}>
                     <p>{shopOrder.shop.name}</p>

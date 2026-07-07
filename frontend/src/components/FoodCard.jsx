@@ -72,12 +72,18 @@ function FoodCard({ data }) {
           </div>
 
           {/* Add to cart */}
-          <button
-            className={`w-8 h-8 rounded-xl flex items-center justify-center transition cursor-pointer ${isInCart ? 'bg-gray-800 text-white' : 'bg-green-600 hover:bg-green-700 text-white'}`}
-            onClick={handleAddToCart}
-          >
-            <FaShoppingCart size={13} />
-          </button>
+          {data.isAvailable !== false ? (
+            <button
+              className={`w-8 h-8 rounded-xl flex items-center justify-center transition cursor-pointer ${isInCart ? 'bg-gray-800 text-white' : 'bg-green-600 hover:bg-green-700 text-white'}`}
+              onClick={handleAddToCart}
+            >
+              <FaShoppingCart size={13} />
+            </button>
+          ) : (
+            <div className='text-xs font-bold text-red-500 bg-red-50 px-2 py-1 rounded-lg border border-red-100'>
+              Out of Stock
+            </div>
+          )}
         </div>
       </div>
     </div>

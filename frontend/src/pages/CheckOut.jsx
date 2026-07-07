@@ -28,6 +28,7 @@ function CheckOut() {
     const { cartItems ,totalAmount,userData} = useSelector(state => state.user)
   const [addressInput, setAddressInput] = useState("")
   const [paymentMethod, setPaymentMethod] = useState("cod")
+  const [orderNotes, setOrderNotes] = useState("")
   const navigate=useNavigate()
   const dispatch = useDispatch()
   const apiKey = import.meta.env.VITE_GEOAPIKEY
@@ -83,6 +84,7 @@ function CheckOut() {
           longitude:location.lon
         },
         totalAmount:AmountWithDeliveryFee,
+        notes: orderNotes,
         cartItems
       },{withCredentials:true})
 
@@ -223,6 +225,17 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
     <span>Total</span>
   <span>{AmountWithDeliveryFee}</span>
 </div>
+
+<div className='pt-2'>
+  <textarea 
+    className='w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff4d2d]' 
+    placeholder='Any special instructions? (e.g. "Extra spicy", "No onion")'
+    rows='2'
+    value={orderNotes}
+    onChange={(e) => setOrderNotes(e.target.value)}
+  ></textarea>
+</div>
+
 </div>
         </section>
         <button className='w-full bg-[#ff4d2d] hover:bg-[#e64526] text-white py-3 rounded-xl font-semibold' onClick={handlePlaceOrder}> {paymentMethod=="cod"?"Place Order":"Pay & Place Order"}</button>
