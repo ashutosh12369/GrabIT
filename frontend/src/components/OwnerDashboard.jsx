@@ -5,7 +5,6 @@ import { FaUtensils } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { FaPen } from "react-icons/fa";
 import OwnerItemCard from './OwnerItemCard.jsx';
-import OwnerItemCard from './OwnerItemCard.jsx';
 import OwnerAnalytics from './OwnerAnalytics.jsx';
 
 function OwnerDashboard() {

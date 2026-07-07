@@ -227,6 +227,7 @@ function ProfilePage() {
                 </div>
               </div>
             )}
+          </div>
           {/* ===== WALLET & REFERRAL CARD ===== */}
           <div className='grabit-card p-6 md:p-8 fade-in'>
             <h2 className='text-xl font-black text-gray-800 mb-4 flex items-center gap-2'>
