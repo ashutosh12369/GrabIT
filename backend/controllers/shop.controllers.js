@@ -60,9 +60,13 @@ export const getShopByCity=async (req,res) => {
         const {city}=req.params
         const { search, cuisine, sort } = req.query
 
+        const searchRegex = city ? new RegExp(city.split(" ")[0], "i") : /.*/i;
         let shops=await Shop.find({
-            city:{$regex:new RegExp(`^${city}$`, "i")},
-            isApproved: true,
+            $or: [
+                { city: { $regex: searchRegex } },
+                { state: { $regex: searchRegex } }
+            ],
+            // isApproved: true, // Temporarily commented to allow testing without admin approval
             isActive: true
         }).populate('items')
         

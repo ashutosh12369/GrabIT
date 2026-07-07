@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import toast from 'react-hot-toast'
 import { FaLeaf, FaDrumstickBite, FaStar, FaMinus, FaPlus, FaShoppingCart } from "react-icons/fa"
 import { FaRegStar } from "react-icons/fa6"
 import { useDispatch, useSelector } from 'react-redux'
@@ -26,6 +27,7 @@ function FoodCard({ data }) {
       quantity,
       foodType: data.foodType
     }))
+    toast.success("Added to cart!")
   }
 
   return (

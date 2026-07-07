@@ -88,7 +88,7 @@ function CheckOut() {
         },
         totalAmount:AmountWithDeliveryFee,
         notes: orderNotes,
-        cartItems,
+        items: cartItems,
         useWallet,
         scheduledFor: scheduledFor ? new Date(scheduledFor).toISOString() : null
       },{withCredentials:true})
@@ -104,6 +104,9 @@ function CheckOut() {
     
     } catch (error) {
       console.log(error)
+      import('react-hot-toast').then(module => {
+        module.default.error(error.response?.data?.message || "Failed to place order")
+      })
     }
   }
 
