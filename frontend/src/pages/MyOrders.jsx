@@ -44,18 +44,29 @@ return ()=>{
           <h1 className='text-2xl font-bold  text-start'>My Orders</h1>
         </div>
         <div className='space-y-6'>
-          {myOrders?.map((order,index)=>(
-            userData.role=="user" ?
-            (
-              <UserOrderCard data={order} key={index}/>
-            )
-            :
-            userData.role=="owner"? (
-              <OwnerOrderCard data={order} key={index}/>
-            )
-            :
-            null
-          ))}
+          {myOrders?.length > 0 ? (
+            myOrders.map((order, index) => (
+              userData.role === "user" ? (
+                <UserOrderCard data={order} key={index} />
+              ) : userData.role === "owner" ? (
+                <OwnerOrderCard data={order} key={index} />
+              ) : null
+            ))
+          ) : (
+            <div className='flex flex-col items-center justify-center py-20 text-center opacity-70'>
+              <img src="/placeholder-empty.png" alt="" className='w-48 h-48 mb-6 opacity-50 grayscale' onError={(e) => e.target.style.display = 'none'} />
+              <h2 className='text-2xl font-bold text-gray-700 mb-2'>No orders yet</h2>
+              <p className='text-gray-500 mb-6'>Looks like you haven't placed any orders yet.</p>
+              {userData.role === "user" && (
+                <button 
+                  className='bg-[#ff4d2d] text-white px-6 py-2 rounded-xl font-semibold hover:bg-orange-600 transition'
+                  onClick={() => navigate('/')}
+                >
+                  Start Ordering
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
