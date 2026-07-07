@@ -37,7 +37,6 @@ function CheckOut() {
   const navigate=useNavigate()
   const dispatch = useDispatch()
   const apiKey = import.meta.env.VITE_GEOAPIKEY
-  const { userData } = useSelector(state => state.user)
 
 
 
