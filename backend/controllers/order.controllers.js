@@ -2,7 +2,7 @@ import DeliveryAssignment from "../models/deliveryAssignment.model.js"
 import Order from "../models/order.model.js"
 import Shop from "../models/shop.model.js"
 import User from "../models/user.model.js"
-import { sendDeliveryOtpMail } from "../utils/mail.js"
+import { sendDeliveryOtpMail, sendInvoiceMail } from "../utils/mail.js"
 import RazorPay from "razorpay"
 import dotenv from "dotenv"
 
@@ -141,7 +141,15 @@ export const placeOrder = async (req, res) => {
             });
         }
 
-
+        // Send Invoice Email for COD or Online payment (where verifyPayment will handle it, wait no let's just send it here)
+        if (paymentMethod !== "online") {
+            await sendInvoiceMail(user, {
+                orderId: newOrder._id.toString(),
+                paymentMethod,
+                totalAmount,
+                deliveryAddress
+            });
+        }
 
         return res.status(201).json(newOrder)
     } catch (error) {
@@ -281,6 +289,12 @@ export const verifyPayment = async (req, res) => {
             });
         }
 
+        await sendInvoiceMail(order.user, {
+            orderId: order._id.toString(),
+            paymentMethod: order.paymentMethod,
+            totalAmount: order.totalAmount,
+            deliveryAddress: order.deliveryAddress
+        });
 
         return res.status(200).json(order)
 
@@ -709,3 +723,34 @@ return res.status(200).json(formattedStats)
 
 
 
+export const getShopAnalytics = async (req, res) => {
+    try {
+        const ownerId = req.userId;
+        const orders = await Order.find({ "shopOrders.owner": ownerId });
+        
+        let totalRevenue = 0;
+        let totalOrders = 0;
+        let peakHours = {};
+
+        orders.forEach(order => {
+            const shopOrder = order.shopOrders.find(so => so.owner.toString() === ownerId.toString());
+            if (shopOrder && shopOrder.status !== "cancelled") {
+                totalOrders++;
+                totalRevenue += shopOrder.subtotal;
+                
+                const hour = new Date(order.createdAt).getHours();
+                peakHours[hour] = (peakHours[hour] || 0) + 1;
+            }
+        });
+
+        const formattedPeakHours = Object.keys(peakHours).map(hour => ({
+            hour: `${hour}:00`,
+            orders: peakHours[hour]
+        })).sort((a, b) => parseInt(a.hour) - parseInt(b.hour));
+
+        return res.status(200).json({ totalRevenue, totalOrders, peakHours: formattedPeakHours });
+
+    } catch (error) {
+        return res.status(500).json({ message: `getShopAnalytics error: ${error}` });
+    }
+}

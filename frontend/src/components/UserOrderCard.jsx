@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { serverUrl } from '../App'
 import { useDispatch } from 'react-redux'
 import { addToCart } from '../redux/userSlice'
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 function UserOrderCard({ data }) {
     const navigate = useNavigate()
@@ -47,6 +49,52 @@ function UserOrderCard({ data }) {
             console.log(error)
         }
     }
+
+    const handleDownloadReceipt = () => {
+        const doc = new jsPDF();
+        doc.setFontSize(20);
+        doc.setTextColor(255, 77, 45); // GrabIT Orange
+        doc.text("GrabIT - Order Receipt", 14, 22);
+        
+        doc.setFontSize(12);
+        doc.setTextColor(100);
+        doc.text(`Order ID: ${data._id}`, 14, 32);
+        doc.text(`Date: ${formatDate(data.createdAt)}`, 14, 38);
+        doc.text(`Payment: ${data.paymentMethod.toUpperCase()}`, 14, 44);
+        doc.text(`Delivery Address: ${data.deliveryAddress?.text?.substring(0, 50)}...`, 14, 50);
+
+        let startY = 60;
+        
+        data.shopOrders.forEach(shopOrder => {
+            doc.setFontSize(14);
+            doc.setTextColor(0);
+            doc.text(`Shop: ${shopOrder.shop.name}`, 14, startY);
+            startY += 8;
+
+            const tableData = shopOrder.shopOrderItems.map(item => [
+                item.name,
+                item.quantity.toString(),
+                `Rs. ${item.price}`,
+                `Rs. ${item.price * item.quantity}`
+            ]);
+
+            doc.autoTable({
+                startY: startY,
+                head: [['Item', 'Qty', 'Price', 'Total']],
+                body: tableData,
+                theme: 'striped',
+                headStyles: { fillColor: [255, 77, 45] }
+            });
+
+            startY = doc.lastAutoTable.finalY + 15;
+        });
+
+        doc.setFontSize(16);
+        doc.setTextColor(0);
+        doc.text(`Grand Total: Rs. ${data.totalAmount}`, 14, startY);
+
+        doc.save(`GrabIT_Receipt_${data._id.substring(0, 6)}.pdf`);
+    };
 
 
     return (
@@ -104,7 +152,8 @@ function UserOrderCard({ data }) {
 
             <div className='flex justify-between items-center border-t pt-2 mt-4'>
                 <p className='font-semibold'>Total: ₹{data.totalAmount}</p>
-                <div className='flex gap-2'>
+                <div className='flex gap-2 flex-wrap justify-end'>
+                    <button className='border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm' onClick={handleDownloadReceipt}>Receipt (PDF)</button>
                     <button className='border border-[#ff4d2d] text-[#ff4d2d] hover:bg-orange-50 px-4 py-2 rounded-lg text-sm' onClick={() => handleReorder()}>Reorder</button>
                     <button className='bg-[#ff4d2d] hover:bg-[#e64526] text-white px-4 py-2 rounded-lg text-sm' onClick={() => navigate(`/track-order/${data._id}`)}>Track Order</button>
                 </div>

@@ -5,11 +5,14 @@ import { FaUtensils } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { FaPen } from "react-icons/fa";
 import OwnerItemCard from './OwnerItemCard.jsx';
+import OwnerItemCard from './OwnerItemCard.jsx';
+import OwnerAnalytics from './OwnerAnalytics.jsx';
+
 function OwnerDashboard() {
   const { myShopData } = useSelector(state => state.owner)
   const navigate = useNavigate()
+  const [activeTab, setActiveTab] = React.useState('menu');
 
-  
   return (
     <div className='w-full min-h-screen bg-[#fff9f6] flex flex-col items-center'>
       <Nav />
@@ -45,7 +48,24 @@ function OwnerDashboard() {
             </div>
           </div>
 
-          {myShopData.items.length==0 && 
+          <div className='flex gap-4 border-b border-gray-200 w-full max-w-3xl'>
+            <button 
+              className={`pb-2 px-4 font-semibold ${activeTab === 'menu' ? 'text-[#ff4d2d] border-b-2 border-[#ff4d2d]' : 'text-gray-500 hover:text-gray-700'}`}
+              onClick={() => setActiveTab('menu')}
+            >
+              Food Menu
+            </button>
+            <button 
+              className={`pb-2 px-4 font-semibold ${activeTab === 'analytics' ? 'text-[#ff4d2d] border-b-2 border-[#ff4d2d]' : 'text-gray-500 hover:text-gray-700'}`}
+              onClick={() => setActiveTab('analytics')}
+            >
+              Analytics
+            </button>
+          </div>
+
+          {activeTab === 'menu' && (
+            <>
+              {myShopData.items.length==0 && 
             <div className='flex justify-center items-center p-4 sm:p-6'>
           <div className='w-full max-w-md bg-white shadow-lg rounded-2xl p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300'>
             <div className='flex flex-col items-center text-center'>
@@ -66,6 +86,10 @@ function OwnerDashboard() {
                 <OwnerItemCard data={item} key={index}/>
               ))}
               </div>}
+            </>
+          )}
+
+          {activeTab === 'analytics' && <OwnerAnalytics />}
             
         </div>}
 

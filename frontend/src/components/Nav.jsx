@@ -11,12 +11,14 @@ import { FaPlus } from "react-icons/fa6"
 import { TbReceipt2 } from "react-icons/tb"
 import { MdAdminPanelSettings, MdSupportAgent } from "react-icons/md"
 import { useNavigate } from 'react-router-dom'
+import LocationModal from './LocationModal'
 
 function Nav() {
   const { userData, currentCity, cartItems } = useSelector(state => state.user)
   const { myShopData } = useSelector(state => state.owner)
   const [showInfo, setShowInfo] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
+  const [showLocationModal, setShowLocationModal] = useState(false)
   const [query, setQuery] = useState("")
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -58,9 +60,12 @@ function Nav() {
       {/* Mobile Search Dropdown */}
       {showSearch && userData?.role === "user" && (
         <div className='w-[90%] h-[64px] bg-white shadow-xl rounded-2xl items-center gap-4 flex fixed top-[78px] left-[5%] md:hidden border border-green-100 fade-in'>
-          <div className='flex items-center w-[30%] overflow-hidden gap-2 px-3 border-r border-green-200'>
-            <FaLocationDot size={20} className="text-green-600" />
-            <div className='w-[80%] truncate text-gray-600 text-sm'>{currentCity}</div>
+          <div 
+            className='flex items-center w-[30%] overflow-hidden gap-2 px-3 border-r border-green-200 cursor-pointer hover:bg-green-50'
+            onClick={() => { setShowSearch(false); setShowLocationModal(true); }}
+          >
+            <FaLocationDot size={20} className="text-[#ff4d2d]" />
+            <div className='w-[80%] truncate font-semibold text-gray-700 text-sm'>{currentCity}</div>
           </div>
           <div className='flex-1 flex items-center gap-2 px-2'>
             <IoIosSearch size={20} className='text-green-600' />
@@ -88,11 +93,14 @@ function Nav() {
       {/* Desktop Search Bar (users only) */}
       {userData?.role === "user" && (
         <div className='md:w-[50%] lg:w-[38%] h-[48px] bg-white shadow-md rounded-2xl items-center gap-3 hidden md:flex border border-green-100 px-3'>
-          <div className='flex items-center gap-2 pr-3 border-r border-green-200'>
-            <FaLocationDot size={16} className="text-green-600" />
-            <div className='max-w-[90px] truncate text-gray-600 text-sm'>{currentCity}</div>
+          <div 
+            className='flex items-center gap-2 pr-3 border-r border-green-200 cursor-pointer hover:bg-green-50 p-1 rounded-lg transition'
+            onClick={() => setShowLocationModal(true)}
+          >
+            <FaLocationDot size={16} className="text-[#ff4d2d]" />
+            <div className='max-w-[90px] truncate font-semibold text-gray-700 text-sm' title="Click to change location">{currentCity}</div>
           </div>
-          <IoIosSearch size={18} className='text-green-500' />
+          <IoIosSearch size={18} className='text-[#ff4d2d]' />
           <input
             type="text"
             placeholder='Search for food, restaurants...'
@@ -212,6 +220,8 @@ function Nav() {
           )}
         </div>
       </div>
+
+      {showLocationModal && <LocationModal onClose={() => setShowLocationModal(false)} />}
     </div>
   )
 }

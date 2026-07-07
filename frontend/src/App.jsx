@@ -28,6 +28,8 @@ import ChatbotWidget from './components/ChatbotWidget'
 import { io } from 'socket.io-client'
 import { setSocket } from './redux/userSlice'
 
+import { Toaster, toast } from 'react-hot-toast'
+
 export const serverUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"
 
 function App() {
@@ -50,6 +52,23 @@ function App() {
         socketInstance.emit('identity', { userId: userData._id })
       }
     })
+
+    // Listen for order status updates
+    socketInstance.on('update-status', (data) => {
+      const { status } = data;
+      toast.success(`Order Status Updated: ${status.toUpperCase()}`, {
+        duration: 4000,
+        position: 'top-right',
+        icon: '🔔'
+      });
+      // Optionally also update redux if not already handled
+      dispatch(updateOrderStatus({
+        orderId: data.orderId,
+        shopId: data.shopId,
+        status: data.status
+      }));
+    });
+
     return () => {
       socketInstance.disconnect()
     }
@@ -57,6 +76,7 @@ function App() {
 
   return (
     <>
+      <Toaster />
       <Routes>
         <Route path='/signup' element={!userData ? <SignUp /> : <Navigate to={"/"} />} />
         <Route path='/signin' element={!userData ? <SignIn /> : <Navigate to={"/"} />} />
