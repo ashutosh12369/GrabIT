@@ -86,7 +86,7 @@ const userSlice = createSlice({
       state.totalAmount = 0
       localStorage.removeItem('cartItems')
       localStorage.removeItem('totalAmount')
-    }
+    },
 
     updateOrderStatus: (state, action) => {
       const { orderId, shopId, status } = action.payload
