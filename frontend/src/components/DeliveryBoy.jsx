@@ -146,7 +146,6 @@ getCurrentOrder()
 handleTodayDeliveries()
   },[userData])
   return (
-  return (
     <div className='w-full min-h-screen flex flex-col gap-5 items-center pb-16 overflow-y-auto' style={{ backgroundColor: 'var(--bg)' }}>
       <Nav/>
       <div className='w-full max-w-[800px] flex flex-col gap-5 items-center mt-6'>
