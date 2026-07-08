@@ -192,7 +192,7 @@ function UserDashboard() {
               <ShopCard data={shop} key={`fav-${shop._id}`} onClick={() => navigate(`/shop/${shop._id}`)} />
             ))}
           </div>
-        </div>
+        </section>
       )}
 
       {/* Food Items */}
