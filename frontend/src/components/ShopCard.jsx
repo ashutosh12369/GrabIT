@@ -23,13 +23,13 @@ function ShopCard({ data, onClick }) {
 
   return (
     <div 
-      className='w-[240px] rounded-2xl bg-white border border-green-100 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden group cursor-pointer relative shrink-0'
+      className='grabit-card w-[240px] flex flex-col overflow-hidden group cursor-pointer relative shrink-0'
       onClick={onClick}
     >
       {/* Image */}
       <div className='relative w-full h-[140px] overflow-hidden bg-gray-100'>
         <img src={data.image} alt={data.name} className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500' />
-        <div className='absolute inset-0 bg-gradient-to-t from-black/60 to-transparent'></div>
+        <div className='absolute inset-0 bg-black/20'></div>
         
         {/* Favorite Button */}
         <button 
@@ -41,7 +41,7 @@ function ShopCard({ data, onClick }) {
 
         {/* Rating Badge */}
         {data.avgRating > 0 && (
-          <div className='absolute bottom-3 left-3 bg-white/90 px-2 py-1 rounded-lg flex items-center gap-1 text-xs font-bold text-gray-800 shadow-sm'>
+          <div className='absolute bottom-3 left-3 bg-white/90 px-2 py-1 rounded-lg flex items-center gap-1 text-xs font-bold text-gray-800 border border-gray-200'>
             <FaStar className='text-yellow-400' /> {data.avgRating.toFixed(1)}
           </div>
         )}

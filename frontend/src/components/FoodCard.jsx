@@ -31,12 +31,12 @@ function FoodCard({ data }) {
   }
 
   return (
-    <div className='w-[240px] rounded-2xl bg-white border border-green-100 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden group'>
+    <div className='grabit-card w-[240px] flex flex-col overflow-hidden group'>
       {/* Image */}
       <div className='relative w-full h-[160px] overflow-hidden bg-green-50'>
         <img src={data.image} alt={data.name} className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-400' />
         {/* Food type badge */}
-        <div className={`absolute top-2.5 right-2.5 w-7 h-7 rounded-full flex items-center justify-center shadow-md ${data.foodType === 'veg' ? 'bg-green-100' : 'bg-red-100'}`}>
+        <div className={`absolute top-2.5 right-2.5 w-7 h-7 rounded-full flex items-center justify-center border border-white ${data.foodType === 'veg' ? 'bg-green-100' : 'bg-red-100'}`}>
           {data.foodType === 'veg'
             ? <FaLeaf className='text-green-600 text-sm' />
             : <FaDrumstickBite className='text-red-500 text-sm' />

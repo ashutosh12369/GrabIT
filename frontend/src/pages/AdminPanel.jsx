@@ -76,11 +76,11 @@ function AdminPanel() {
   return (
     <div className='min-h-screen' style={{ backgroundColor: 'var(--bg)' }}>
       <Nav />
-      <div className='pt-[88px] px-4 md:px-8 max-w-7xl mx-auto pb-10'>
+      <main className='section-container pt-[88px] pb-10'>
 
         {/* Header */}
         <div className='flex items-center gap-3 my-6 fade-in'>
-          <div className='w-12 h-12 bg-gradient-to-br from-green-600 to-green-400 rounded-2xl flex items-center justify-center shadow-lg'>
+          <div className='w-12 h-12 bg-green-600 rounded-2xl flex items-center justify-center'>
             <MdAdminPanelSettings size={24} className='text-white' />
           </div>
           <div>
@@ -117,13 +117,13 @@ function AdminPanel() {
             {/* Stat Cards */}
             <div className='grid grid-cols-2 md:grid-cols-4 gap-4 mb-8'>
               {[
-                { label: 'Total Users', value: stats.totalUsers, color: 'from-blue-500 to-blue-400', icon: '👤' },
-                { label: 'Total Shops', value: stats.totalShops, color: 'from-green-600 to-green-400', icon: '🏪' },
-                { label: 'Total Orders', value: stats.totalOrders, color: 'from-purple-500 to-purple-400', icon: '📦' },
-                { label: 'Total Revenue', value: `₹${stats.totalRevenue?.toLocaleString()}`, color: 'from-emerald-600 to-emerald-400', icon: '💰' },
+                { label: 'Total Users', value: stats.totalUsers, color: 'bg-blue-100 text-blue-600', icon: '👤' },
+                { label: 'Total Shops', value: stats.totalShops, color: 'bg-green-100 text-green-600', icon: '🏪' },
+                { label: 'Total Orders', value: stats.totalOrders, color: 'bg-purple-100 text-purple-600', icon: '📦' },
+                { label: 'Total Revenue', value: `₹${stats.totalRevenue?.toLocaleString()}`, color: 'bg-emerald-100 text-emerald-600', icon: '💰' },
               ].map((s, i) => (
                 <div key={i} className='stat-card slide-up' style={{ animationDelay: `${i * 0.1}s` }}>
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${s.color} flex items-center justify-center text-xl mb-3`}>{s.icon}</div>
+                  <div className={`w-10 h-10 rounded-xl ${s.color} flex items-center justify-center text-xl mb-3`}>{s.icon}</div>
                   <div className='text-2xl font-black text-gray-800'>{s.value}</div>
                   <div className='text-sm text-gray-500 font-medium'>{s.label}</div>
                 </div>
@@ -261,7 +261,7 @@ function AdminPanel() {
             {orders.length === 0 && <div className='text-center py-10 text-gray-400'>No orders found</div>}
           </div>
         )}
-      </div>
+      </main>
     </div>
   )
 }

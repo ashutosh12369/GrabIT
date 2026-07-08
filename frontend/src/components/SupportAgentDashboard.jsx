@@ -77,10 +77,10 @@ function SupportAgentDashboard() {
   }
 
   return (
-    <div className='w-full px-4 md:px-8 max-w-6xl mx-auto'>
+    <div className='w-full px-4 md:px-8 max-w-6xl mx-auto pt-[100px] pb-10'>
       {/* Header */}
       <div className='flex items-center gap-3 mb-6 fade-in'>
-        <div className='w-12 h-12 bg-gradient-to-br from-green-600 to-green-400 rounded-2xl flex items-center justify-center shadow-lg'>
+        <div className='w-12 h-12 bg-green-600 rounded-2xl flex items-center justify-center'>
           <MdSupportAgent size={24} className='text-white' />
         </div>
         <div>
@@ -131,7 +131,7 @@ function SupportAgentDashboard() {
           ) : (
             <div className='grabit-card flex flex-col h-[520px] overflow-hidden'>
               {/* Header */}
-              <div className='bg-gradient-to-r from-green-700 to-green-500 px-5 py-4 flex items-center justify-between'>
+              <div className='bg-green-600 px-5 py-4 flex items-center justify-between'>
                 <div>
                   <div className='text-white font-bold'>{activeChat.user?.fullName}</div>
                   <div className='text-green-200 text-xs'>{activeChat.user?.email} · {activeChat.user?.mobile}</div>

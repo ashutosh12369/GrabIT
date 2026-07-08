@@ -69,24 +69,24 @@ function Nav() {
   const avatarLetter = userData?.fullName?.slice(0, 1)?.toUpperCase()
 
   return (
-    <div className='w-full h-[72px] flex items-center justify-between md:justify-center gap-[30px] px-[20px] fixed top-0 z-[9999] glass border-b border-green-100 shadow-sm overflow-visible'>
+    <div className='w-full h-[72px] flex items-center justify-between md:justify-center gap-[30px] px-[20px] fixed top-0 z-[9999] glass overflow-visible'>
 
       {/* Mobile Search Dropdown */}
       {showSearch && userData?.role === "user" && (
-        <div className='w-[90%] h-[64px] bg-white shadow-xl rounded-2xl items-center gap-4 flex fixed top-[78px] left-[5%] md:hidden border border-green-100 fade-in'>
+        <div className='w-[90%] h-[64px] bg-white dark:bg-gray-800 rounded-2xl items-center gap-4 flex fixed top-[78px] left-[5%] md:hidden border border-green-200 dark:border-gray-700 fade-in'>
           <div 
             className='flex items-center w-[30%] overflow-hidden gap-2 px-3 border-r border-green-200 cursor-pointer hover:bg-green-50'
             onClick={() => { setShowSearch(false); setShowLocationModal(true); }}
           >
             <FaLocationDot size={20} className="text-[#16a34a]" />
-            <div className='w-[80%] truncate font-semibold text-gray-700 text-sm'>{currentCity}</div>
+            <div className='w-[80%] truncate font-semibold text-gray-700 dark:text-gray-200 text-sm'>{currentCity}</div>
           </div>
           <div className='flex-1 flex items-center gap-2 px-2'>
             <IoIosSearch size={20} className='text-green-600' />
             <input
               type="text"
               placeholder='Search delicious food...'
-              className='outline-none w-full text-gray-700 text-sm'
+              className='outline-none w-full text-gray-700 dark:text-gray-200 bg-transparent text-sm'
               onChange={(e) => setQuery(e.target.value)}
               value={query}
             />
@@ -96,29 +96,29 @@ function Nav() {
 
       {/* Logo */}
       <div className='flex items-center gap-2 cursor-pointer' onClick={() => navigate('/')}>
-        <div className='w-8 h-8 bg-gradient-to-br from-green-600 to-green-400 rounded-lg flex items-center justify-center shadow-md'>
+        <div className='w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center'>
           <span className='text-white font-black text-sm'>G</span>
         </div>
-        <h1 className='text-2xl font-black bg-gradient-to-r from-green-700 to-green-500 bg-clip-text text-transparent'>
+        <h1 className='text-2xl font-black text-green-700 dark:text-green-500'>
           GrabIT
         </h1>
       </div>
 
       {/* Desktop Search Bar (users only) */}
       {userData?.role === "user" && (
-        <div className='md:w-[50%] lg:w-[38%] h-[48px] bg-white shadow-md rounded-2xl items-center gap-3 hidden md:flex border border-green-100 px-3'>
+        <div className='md:w-[50%] lg:w-[38%] h-[48px] bg-white dark:bg-gray-800 rounded-2xl items-center gap-3 hidden md:flex border border-green-200 dark:border-gray-700 px-3'>
           <div 
-            className='flex items-center gap-2 pr-3 border-r border-green-200 cursor-pointer hover:bg-green-50 p-1 rounded-lg transition'
+            className='flex items-center gap-2 pr-3 border-r border-green-200 dark:border-gray-700 cursor-pointer hover:bg-green-50 dark:hover:bg-gray-700 p-1 rounded-lg transition'
             onClick={() => setShowLocationModal(true)}
           >
             <FaLocationDot size={16} className="text-[#16a34a]" />
-            <div className='max-w-[90px] truncate font-semibold text-gray-700 text-sm' title="Click to change location">{currentCity}</div>
+            <div className='max-w-[90px] truncate font-semibold text-gray-700 dark:text-gray-200 text-sm' title="Click to change location">{currentCity}</div>
           </div>
           <IoIosSearch size={18} className='text-[#16a34a]' />
           <input
             type="text"
             placeholder='Search for food, restaurants...'
-            className='outline-none flex-1 text-gray-700 text-sm'
+            className='outline-none flex-1 text-gray-700 dark:text-gray-200 bg-transparent text-sm'
             onChange={(e) => setQuery(e.target.value)}
             value={query}
           />
@@ -207,7 +207,7 @@ function Nav() {
         {/* Avatar + dropdown */}
         <div className='relative'>
           <div
-            className='w-9 h-9 rounded-full flex items-center justify-center bg-gradient-to-br from-green-600 to-green-400 text-white text-base font-bold shadow-md cursor-pointer select-none overflow-hidden'
+            className='w-9 h-9 rounded-full flex items-center justify-center bg-green-600 text-white text-base font-bold cursor-pointer select-none overflow-hidden border border-green-700'
             onClick={() => setShowInfo(prev => !prev)}
           >
             {userData?.profilePicture ? (
@@ -218,8 +218,8 @@ function Nav() {
           </div>
 
           {showInfo && (
-            <div className='absolute right-0 top-[48px] w-[200px] bg-white shadow-2xl rounded-2xl p-4 flex flex-col gap-2 z-[9999] border border-green-100 scale-in'>
-              <div className='text-[15px] font-semibold text-gray-800'>{userData?.fullName}</div>
+            <div className='absolute right-0 top-[48px] w-[200px] bg-white dark:bg-gray-800 rounded-2xl p-4 flex flex-col gap-2 z-[9999] border border-gray-200 dark:border-gray-700 scale-in'>
+              <div className='text-[15px] font-semibold text-gray-800 dark:text-gray-100'>{userData?.fullName}</div>
               <div className='text-xs text-green-600 font-medium capitalize bg-green-50 px-2 py-0.5 rounded-full w-fit'>{userData?.role}</div>
               <hr className='border-green-100' />
               <button className='text-left text-sm text-gray-600 hover:text-green-700 font-medium' onClick={() => { navigate('/profile'); setShowInfo(false) }}>

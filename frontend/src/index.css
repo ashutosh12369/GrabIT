@@ -21,7 +21,8 @@
   --text: #111827;
   --text-muted: #6b7280;
   --border: #d1fae5;
-  --shadow: 0 4px 24px rgba(22, 163, 74, 0.10);
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(22, 163, 74, 0.15);
 }
 
 :root.dark {
@@ -30,7 +31,8 @@
   --text: #f8fafc;
   --text-muted: #94a3b8;
   --border: #334155;
-  --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --glass-bg: rgba(15, 23, 42, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 /* ─── Global Reset ─────────────────────────────── */
@@ -48,6 +50,32 @@
 body {
   background-color: var(--bg);
   color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Layout Utilities ─────────────────────────── */
+.section-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+@media (min-width: 640px) {
+  .section-container { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+@media (min-width: 1024px) {
+  .section-container { padding-left: 2rem; padding-right: 2rem; }
+}
+
+.section-padding {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+@media (min-width: 768px) {
+  .section-padding { padding-top: 5rem; padding-bottom: 5rem; }
 }
 
 /* ─── Animations ───────────────────────────────── */
@@ -64,11 +92,6 @@ body {
 @keyframes scaleIn {
   from { opacity: 0; transform: scale(0.92); }
   to   { opacity: 1; transform: scale(1); }
-}
-
-@keyframes pulse-green {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.4); }
-  50%       { box-shadow: 0 0 0 10px rgba(22, 163, 74, 0); }
 }
 
 @keyframes spin {
@@ -88,23 +111,22 @@ body {
 /* ─── Card ─────────────────────────────────────── */
 .grabit-card {
   background: var(--card);
-  border-radius: 16px;
-  box-shadow: var(--shadow);
+  border-radius: 12px;
   border: 1px solid var(--border);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .grabit-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(22, 163, 74, 0.15);
+  border-color: var(--primary);
 }
 
 /* ─── Buttons ───────────────────────────────────── */
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  background: var(--primary);
   color: white;
   font-weight: 600;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px 20px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -116,13 +138,11 @@ body {
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.35);
+  background: var(--primary-dark);
 }
 
 .btn-primary:active {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 
 .btn-outline {
@@ -130,7 +150,7 @@ body {
   color: var(--primary);
   border: 1.5px solid var(--primary);
   font-weight: 600;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px 20px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -141,26 +161,25 @@ body {
 }
 
 .btn-outline:hover {
-  background: var(--green-50);
-  transform: translateY(-1px);
+  background: var(--primary);
+  color: white;
 }
 
 /* ─── Input ─────────────────────────────────────── */
 .grabit-input {
   width: 100%;
-  border: 1.5px solid #d1fae5;
-  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
   padding: 10px 14px;
   font-size: 14px;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  background: white;
+  transition: border-color 0.2s;
+  background: var(--card);
   color: var(--text);
 }
 
 .grabit-input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
 }
 
 /* ─── Badge ─────────────────────────────────────── */
@@ -206,34 +225,24 @@ body {
 .status-out-delivery { color: #7c3aed; }
 .status-delivered    { color: #16a34a; }
 
-/* ─── Green Gradient Hero ───────────────────────── */
-.hero-gradient {
-  background: linear-gradient(135deg, #14532d 0%, #16a34a 50%, #22c55e 100%);
-}
-
 /* ─── Glass ─────────────────────────────────────── */
 .glass {
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.5);
-}
-
-/* ─── Chatbot Widget ────────────────────────────── */
-.chatbot-bubble {
-  animation: pulse-green 2s infinite;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 /* ─── Stat Card ─────────────────────────────────── */
 .stat-card {
-  background: linear-gradient(135deg, var(--card), var(--green-50));
+  background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 12px;
   padding: 24px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, border-color 0.2s;
 }
 
 .stat-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(22, 163, 74, 0.12);
+  transform: translateY(-2px);
+  border-color: var(--primary);
 }

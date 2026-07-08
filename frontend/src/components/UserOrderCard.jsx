@@ -98,7 +98,7 @@ function UserOrderCard({ data }) {
 
 
     return (
-        <div className='bg-white rounded-lg shadow p-4 space-y-4'>
+        <div className='grabit-card p-4 space-y-4'>
             <div className='flex justify-between border-b pb-2'>
                 <div>
                     <p className='font-semibold'>
@@ -122,12 +122,12 @@ function UserOrderCard({ data }) {
             )}
 
             {data.shopOrders.map((shopOrder, index) => (
-                <div className='"border rounded-lg p-3 bg-[#fffaf7] space-y-3' key={index}>
+                <div className='border rounded-lg p-3 bg-gray-50 space-y-3' key={index}>
                     <p>{shopOrder.shop.name}</p>
 
                     <div className='flex space-x-4 overflow-x-auto pb-2'>
                         {shopOrder.shopOrderItems.map((item, index) => (
-                            <div key={index} className='flex-shrink-0 w-40 border rounded-lg p-2 bg-white"'>
+                            <div key={index} className='flex-shrink-0 w-40 border rounded-lg p-2 bg-white'>
                                 <img src={item.item.image} alt="" className='w-full h-24 object-cover rounded' />
                                 <p className='text-sm font-semibold mt-1'>{item.name}</p>
                                 <p className='text-xs text-gray-500'>Qty: {item.quantity} x ₹{item.price}</p>
@@ -154,8 +154,8 @@ function UserOrderCard({ data }) {
                 <p className='font-semibold'>Total: ₹{data.totalAmount}</p>
                 <div className='flex gap-2 flex-wrap justify-end'>
                     <button className='border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm' onClick={handleDownloadReceipt}>Receipt (PDF)</button>
-                    <button className='border border-[#16a34a] text-[#16a34a] hover:bg-green-50 px-4 py-2 rounded-lg text-sm' onClick={() => handleReorder()}>Reorder</button>
-                    <button className='bg-[#16a34a] hover:bg-[#15803d] text-white px-4 py-2 rounded-lg text-sm' onClick={() => navigate(`/track-order/${data._id}`)}>Track Order</button>
+                    <button className='btn-outline px-4 py-2 text-sm' onClick={() => handleReorder()}>Reorder</button>
+                    <button className='btn-primary px-4 py-2 text-sm' onClick={() => navigate(`/track-order/${data._id}`)}>Track Order</button>
                 </div>
             </div>
 

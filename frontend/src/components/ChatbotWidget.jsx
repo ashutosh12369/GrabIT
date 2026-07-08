@@ -55,9 +55,9 @@ function ChatbotWidget() {
 
       {/* Chat Panel */}
       {isOpen && (
-        <div className='w-[340px] sm:w-[380px] h-[520px] bg-white rounded-3xl shadow-2xl border border-green-100 flex flex-col overflow-hidden chat-slide'>
+        <div className='w-[340px] sm:w-[380px] h-[520px] grabit-card flex flex-col overflow-hidden chat-slide'>
           {/* Header */}
-          <div className='bg-gradient-to-r from-green-700 to-green-500 px-5 py-4 flex items-center justify-between'>
+          <div className='bg-green-600 px-5 py-4 flex items-center justify-between'>
             <div className='flex items-center gap-3'>
               <div className='w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center'>
                 <span className='text-xl'>🤖</span>
@@ -135,7 +135,7 @@ function ChatbotWidget() {
 
       {/* Toggle Button */}
       <button
-        className='w-14 h-14 bg-gradient-to-br from-green-700 to-green-500 rounded-2xl flex items-center justify-center shadow-xl cursor-pointer chatbot-bubble hover:scale-105 transition-transform'
+        className='w-14 h-14 bg-green-600 rounded-2xl flex items-center justify-center border border-green-700 cursor-pointer chatbot-bubble hover:scale-105 transition-transform'
         onClick={() => setIsOpen(prev => !prev)}
       >
         {isOpen

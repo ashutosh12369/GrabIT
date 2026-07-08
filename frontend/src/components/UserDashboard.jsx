@@ -92,29 +92,31 @@ function UserDashboard() {
       <Nav />
 
       {/* Hero Banner */}
-      <div className='w-full hero-gradient px-6 pt-28 pb-10 flex flex-col items-center text-center gap-3'>
+      <section className='section-container pt-28 pb-10'>
+        <div className='w-full bg-green-600 rounded-2xl p-10 flex flex-col items-center text-center gap-3'>
         <h1 className='text-3xl md:text-4xl font-black text-white'>
           Hungry? <span className='text-green-300'>GrabIT!</span>
         </h1>
         <p className='text-green-200 text-base max-w-md'>Order from the best restaurants in <span className='font-bold text-white'>{currentCity || "your city"}</span></p>
-      </div>
+        </div>
+      </section>
 
       {/* Search Results */}
       {searchItems && searchItems.length > 0 && (
-        <div className='w-full max-w-6xl flex flex-col gap-4 items-start px-4 fade-in'>
+        <section className='section-container flex flex-col gap-4 items-start fade-in'>
           <h2 className='text-xl font-bold text-gray-700'>🔍 Search Results</h2>
           <div className='w-full flex flex-wrap gap-5 justify-center'>
             {searchItems.map(item => <FoodCard data={item} key={item._id} />)}
           </div>
-        </div>
+        </section>
       )}
 
       {/* Categories */}
-      <div className='w-full max-w-6xl flex flex-col gap-3 items-start px-4'>
+      <section className='section-container flex flex-col gap-3 items-start'>
         <h2 className='text-xl font-bold text-gray-700'>🍽️ What are you craving?</h2>
         <div className='w-full relative group'>
           {showLeftCateButton && (
-            <button className='absolute left-0 top-1/2 -translate-y-1/2 bg-white/90 text-green-700 p-2 rounded-full shadow-lg hover:bg-white z-10 cursor-pointer hidden md:block' onClick={() => scrollHandler(cateScrollRef, "left")}>
+            <button className='absolute left-0 top-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 text-green-700 dark:text-green-500 p-2 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 z-10 cursor-pointer hidden md:block' onClick={() => scrollHandler(cateScrollRef, "left")}>
               <FaCircleChevronLeft size={22} />
             </button>
           )}
@@ -130,18 +132,18 @@ function UserDashboard() {
             ))}
           </div>
           {showRightCateButton && (
-            <button className='absolute right-0 top-1/2 -translate-y-1/2 bg-white/90 text-green-700 p-2 rounded-full shadow-lg hover:bg-white z-10 cursor-pointer hidden md:block' onClick={() => scrollHandler(cateScrollRef, "right")}>
+            <button className='absolute right-0 top-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 text-green-700 dark:text-green-500 p-2 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 z-10 cursor-pointer hidden md:block' onClick={() => scrollHandler(cateScrollRef, "right")}>
               <FaCircleChevronRight size={22} />
             </button>
           )}
         </div>
-      </div>
+      </section>
 
       {/* Shops */}
-      <div className='w-full max-w-6xl flex flex-col gap-4 items-start px-4'>
+      <section className='section-container flex flex-col gap-4 items-start'>
         <div className='w-full flex items-center justify-between'>
           <h2 className='text-xl font-bold text-gray-700'>🏪 Top Restaurants in {currentCity}</h2>
-          <div className='flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-green-100 shadow-sm'>
+          <div className='flex items-center gap-2 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-gray-700'>
             <FaFilter className='text-green-600 text-sm' />
             <select 
               className='bg-transparent text-sm font-semibold outline-none text-gray-700 cursor-pointer'
@@ -158,7 +160,7 @@ function UserDashboard() {
 
         <div className='w-full relative group'>
           {showLeftShopButton && (
-            <button className='absolute left-0 top-1/2 -translate-y-1/2 bg-white/90 text-green-700 p-2 rounded-full shadow-lg hover:bg-white z-10 cursor-pointer hidden md:block' onClick={() => scrollHandler(shopScrollRef, "left")}>
+            <button className='absolute left-0 top-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 text-green-700 dark:text-green-500 p-2 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 z-10 cursor-pointer hidden md:block' onClick={() => scrollHandler(shopScrollRef, "left")}>
               <FaCircleChevronLeft size={22} />
             </button>
           )}
@@ -174,16 +176,16 @@ function UserDashboard() {
             )}
           </div>
           {showRightShopButton && (
-            <button className='absolute right-0 top-1/2 -translate-y-1/2 bg-white/90 text-green-700 p-2 rounded-full shadow-lg hover:bg-white z-10 cursor-pointer hidden md:block' onClick={() => scrollHandler(shopScrollRef, "right")}>
+            <button className='absolute right-0 top-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 text-green-700 dark:text-green-500 p-2 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 z-10 cursor-pointer hidden md:block' onClick={() => scrollHandler(shopScrollRef, "right")}>
               <FaCircleChevronRight size={22} />
             </button>
           )}
         </div>
-      </div>
+      </section>
 
       {/* Favorites Section */}
       {userData?.favorites?.length > 0 && shopInMyCity?.some(s => userData.favorites.includes(s._id)) && (
-        <div className='w-full max-w-6xl flex flex-col gap-4 items-start px-4'>
+        <section className='section-container flex flex-col gap-4 items-start'>
           <h2 className='text-xl font-bold text-gray-700 flex items-center gap-2'>❤️ Your Favorites</h2>
           <div className='w-full flex overflow-x-auto gap-5 pb-4 hide-scrollbar'>
             {shopInMyCity.filter(s => userData.favorites.includes(s._id)).map((shop) => (
@@ -194,7 +196,7 @@ function UserDashboard() {
       )}
 
       {/* Food Items */}
-      <div className='w-full max-w-6xl flex flex-col gap-4 items-start px-4'>
+      <section className='section-container flex flex-col gap-4 items-start'>
         <h2 className='text-xl font-bold text-gray-700'>
           🔥 {activeCategory === "All" ? "Suggested Food Items" : activeCategory}
           <span className='ml-2 text-sm font-normal text-gray-400'>({updatedItemsList?.length || 0} items)</span>
@@ -208,7 +210,7 @@ function UserDashboard() {
             </div>
           )}
         </div>
-      </div>
+      </section>
     </div>
   )
 }

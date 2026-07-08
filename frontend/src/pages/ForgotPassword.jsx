@@ -59,7 +59,7 @@ function ForgotPassword() {
   }
 
   return (
-    <div className='flex w-full items-center justify-center min-h-screen p-4' style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)' }}>
+    <div className='flex w-full items-center justify-center min-h-screen p-4' style={{ backgroundColor: 'var(--bg)' }}>
       <div className='grabit-card w-full max-w-md p-8 fade-in'>
 
         {/* Back + Brand */}
@@ -68,10 +68,10 @@ function ForgotPassword() {
             <IoIosArrowRoundBack size={22} />
           </button>
           <div className='flex items-center gap-2'>
-            <div className='w-8 h-8 bg-gradient-to-br from-green-600 to-green-400 rounded-lg flex items-center justify-center'>
+            <div className='w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center'>
               <span className='text-white font-black text-sm'>G</span>
             </div>
-            <span className='font-black text-lg bg-gradient-to-r from-green-700 to-green-500 bg-clip-text text-transparent'>GrabIT</span>
+            <span className='font-black text-lg text-green-700 dark:text-green-500'>GrabIT</span>
           </div>
         </div>
 

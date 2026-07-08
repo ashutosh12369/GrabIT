@@ -148,13 +148,13 @@ handleTodayDeliveries()
   return (
     <div className='w-full min-h-screen flex flex-col gap-5 items-center pb-16 overflow-y-auto' style={{ backgroundColor: 'var(--bg)' }}>
       <Nav/>
-      <div className='w-full max-w-[800px] flex flex-col gap-5 items-center mt-6'>
-    <div className='rounded-2xl shadow-sm p-5 flex flex-col justify-start items-center w-[90%] border border-green-100 dark:border-gray-700 text-center gap-2' style={{ backgroundColor: 'var(--card)' }}>
+      <main className='section-container flex flex-col gap-5 items-center pt-[88px] w-full max-w-[800px] mx-auto'>
+    <div className='grabit-card p-5 flex flex-col justify-start items-center w-full text-center gap-2'>
 <h1 className='text-xl font-bold text-green-600 dark:text-green-500'>Welcome, {userData.fullName}</h1>
 <p className='text-gray-600 dark:text-gray-400 text-sm'><span className='font-semibold'>Latitude:</span> {deliveryBoyLocation?.lat || '...'}, <span className='font-semibold'>Longitude:</span> {deliveryBoyLocation?.lon || '...'}</p>
     </div>
 
-<div className='rounded-2xl shadow-sm p-5 w-[90%] mb-2 border border-green-100 dark:border-gray-700' style={{ backgroundColor: 'var(--card)' }}>
+<div className='grabit-card p-5 w-full mb-2'>
   <h1 className='text-lg font-bold mb-3 text-green-600 dark:text-green-500'>Today's Deliveries</h1>
 
   <ResponsiveContainer width="100%" height={200}>
@@ -167,14 +167,14 @@ handleTodayDeliveries()
    </BarChart>
   </ResponsiveContainer>
 
-  <div className='max-w-sm mx-auto mt-6 p-6 rounded-2xl shadow-sm text-center border border-green-100 dark:border-gray-700' style={{ backgroundColor: 'var(--bg)' }}>
+  <div className='grabit-card mx-auto mt-6 p-6 text-center max-w-sm'>
 <h1 className='text-xl font-semibold mb-2' style={{ color: 'var(--text)' }}>Today's Earning</h1>
 <span className='text-3xl font-bold text-green-600 dark:text-green-500'>₹{totalEarning}</span>
   </div>
 </div>
 
 
-{!currentOrder && <div className='rounded-2xl p-5 shadow-sm w-[90%] border border-green-100 dark:border-gray-700' style={{ backgroundColor: 'var(--card)' }}>
+{!currentOrder && <div className='grabit-card p-5 w-full'>
 <h1 className='text-lg font-bold mb-4 flex items-center gap-2' style={{ color: 'var(--text)' }}>Available Orders</h1>
 
 <div className='space-y-4'>
@@ -188,7 +188,7 @@ availableAssignments.map((a,index)=>(
     <p className='text-sm mt-1' style={{ color: 'var(--text-muted)' }}><span className='font-semibold'>Delivery Address:</span> {a?.deliveryAddress.text}</p>
 <p className='text-xs mt-1' style={{ color: 'var(--text-muted)' }}>{a.items.length} items | ₹{a.subtotal}</p>
    </div>
-   <button className='bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition cursor-pointer' onClick={()=>acceptOrder(a.assignmentId)}>Accept</button>
+   <button className='btn-primary px-4 py-2 text-sm' onClick={()=>acceptOrder(a.assignmentId)}>Accept</button>
 
   </div>
 ))
@@ -196,7 +196,7 @@ availableAssignments.map((a,index)=>(
 </div>
 </div>}
 
-{currentOrder && <div className='rounded-2xl p-5 shadow-sm w-[90%] border border-green-100 dark:border-gray-700' style={{ backgroundColor: 'var(--card)' }}>
+{currentOrder && <div className='grabit-card p-5 w-full'>
 <h2 className='text-lg font-bold mb-3' style={{ color: 'var(--text)' }}>📦 Current Order</h2>
 <div className='border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-4 bg-gray-50 dark:bg-gray-800'>
   <p className='font-bold text-sm' style={{ color: 'var(--text)' }}>{currentOrder?.shopOrder.shop.name}</p>
@@ -213,7 +213,7 @@ availableAssignments.map((a,index)=>(
         lat: currentOrder.deliveryAddress.latitude,
         lon: currentOrder.deliveryAddress.longitude
       }}} />
-{!showOtpBox ? <button className='mt-5 w-full bg-green-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:bg-green-700 active:scale-95 transition-all duration-200 cursor-pointer flex justify-center items-center' onClick={sendOtp} disabled={loading}>
+{!showOtpBox ? <button className='btn-primary mt-5 w-full py-3 px-4 text-base' onClick={sendOtp} disabled={loading}>
 {loading?<ClipLoader size={20} color='white'/> :"Mark As Delivered"}
  </button>:<div className='mt-5 p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-800'>
 <p className='text-sm font-semibold mb-3' style={{ color: 'var(--text)' }}>Enter OTP sent to <span className='text-green-600 dark:text-green-500 font-bold'>{currentOrder.user.fullName}</span></p>
@@ -226,7 +226,7 @@ availableAssignments.map((a,index)=>(
   </div>}
 
 
-      </div>
+      </main>
     </div>
   )
 }

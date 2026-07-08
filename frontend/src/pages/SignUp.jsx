@@ -65,14 +65,14 @@ function SignUp() {
   }
 
   return (
-    <div className='min-h-screen w-full flex items-center justify-center p-4' style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)' }}>
-      <div className='grabit-card w-full max-w-md p-8 fade-in bg-white rounded-2xl shadow-xl'>
+    <div className='min-h-screen w-full flex items-center justify-center p-4' style={{ backgroundColor: 'var(--bg)' }}>
+      <div className='grabit-card w-full max-w-md p-8 fade-in'>
         {/* Brand */}
         <div className='flex items-center gap-2 mb-2'>
-          <div className='w-9 h-9 bg-gradient-to-br from-green-600 to-green-400 rounded-xl flex items-center justify-center shadow'>
+          <div className='w-9 h-9 bg-green-600 rounded-xl flex items-center justify-center'>
             <span className='text-white font-black text-base'>G</span>
           </div>
-          <h1 className='text-2xl font-black bg-gradient-to-r from-green-700 to-green-500 bg-clip-text text-transparent'>GrabIT</h1>
+          <h1 className='text-2xl font-black text-green-700 dark:text-green-500'>GrabIT</h1>
         </div>
         <p className='text-gray-500 mb-6 text-sm'>Create your account to get started 🎉</p>
 

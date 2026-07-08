@@ -156,14 +156,14 @@ function ProfilePage() {
             <div className='flex flex-col items-center mb-6'>
               <div className='relative group'>
                 {userData?.profilePicture ? (
-                  <img src={userData.profilePicture} alt="Profile" className='w-24 h-24 rounded-full object-cover border-4 border-green-200 shadow-lg' />
+                  <img src={userData.profilePicture} alt="Profile" className='w-24 h-24 rounded-full object-cover border-4 border-green-200' />
                 ) : (
-                  <div className='w-24 h-24 rounded-full bg-gradient-to-br from-green-600 to-green-400 flex items-center justify-center text-white text-3xl font-bold shadow-lg border-4 border-green-200'>
+                  <div className='w-24 h-24 rounded-full bg-green-600 flex items-center justify-center text-white text-3xl font-bold border-4 border-green-200'>
                     {avatarLetter}
                   </div>
                 )}
                 <button
-                  className='absolute bottom-0 right-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:bg-green-700 transition'
+                  className='absolute bottom-0 right-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center cursor-pointer hover:bg-green-700 transition'
                   onClick={() => fileRef.current?.click()}
                   disabled={profileLoading}
                 >
@@ -367,8 +367,8 @@ function ProfilePage() {
 
           {/* Delete Confirmation Modal */}
           {showDeleteModal && (
-            <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-[99999] p-4'>
-              <div className='bg-white rounded-2xl p-8 max-w-sm w-full space-y-4 scale-in shadow-2xl'>
+            <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-[99999] p-4 backdrop-blur-sm'>
+              <div className='grabit-card p-8 max-w-sm w-full space-y-4 scale-in'>
                 <h3 className='text-xl font-black text-red-600'>⚠️ Are you sure?</h3>
                 <p className='text-sm text-gray-600'>This will permanently delete your account, all your orders, saved addresses, and profile data. This action cannot be undone.</p>
                 <div className='flex gap-3'>

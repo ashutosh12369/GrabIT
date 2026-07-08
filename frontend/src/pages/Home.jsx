@@ -13,9 +13,9 @@ function Home() {
 
   if (userData?.role === "admin") {
     return (
-      <div className='w-full min-h-screen pt-[100px] flex flex-col items-center justify-center' style={{ background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)' }}>
+      <div className='w-full min-h-screen pt-[100px] flex flex-col items-center justify-center' style={{ backgroundColor: 'var(--bg)' }}>
         <div className='grabit-card p-10 flex flex-col items-center gap-4 fade-in'>
-          <div className='w-16 h-16 bg-gradient-to-br from-green-600 to-green-400 rounded-2xl flex items-center justify-center shadow-lg'>
+          <div className='w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center'>
             <MdAdminPanelSettings size={32} className='text-white' />
           </div>
           <h2 className='text-2xl font-bold text-gray-800'>Welcome, Admin</h2>
